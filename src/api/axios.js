@@ -1,5 +1,15 @@
 import axios from 'axios'
 
 export const api = axios.create({
-    baseURL:"http://localhost:3000/netvibe"
+    baseURL:"http://localhost:5000/netvibe"
+})
+// This automatically sends JWT in every request
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
 })

@@ -28,6 +28,7 @@ export default function SignUp() {
       const register = await api.post("/registerUser", user);
 
       localStorage.setItem("token", register.data.token);
+      localStorage.setItem("username", username)
 
       console.log("User Added Successfully", register.data);
 
@@ -46,80 +47,118 @@ export default function SignUp() {
     }
   };
   const handleGoogleLogin = () => {
-    window.location.href = "/googleAuthLogin";
-  }
+  window.location.href = "http://localhost:5000/api/auth/google";
+};
 
-  return(
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-      
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-400">
-         NetVIBE
-        </h1>
-      </div>
+return (
+  <div className="min-h-screen flex flex-col items-center justify-center 
+    bg-gray-50 dark:bg-black">
 
-      <div className="w-full max-w-md bg-white shadow-md rounded-xl p-6">
-        <form onSubmit={handleuser} className="space-y-4">
+    <h1 className="mb-6 text-4xl font-semibold tracking-wide">
+      <span className="text-transparent bg-clip-text bg-gradient-to-r 
+        from-purple-500 to-cyan-400">
+        NetVIBE
+      </span>
+    </h1>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email or phone no:"
-            className="w-full border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
-            onChange={(e)=>setemail(e.target.value)}
-            required
-          />
+    <div className="w-full max-w-sm px-10 py-8
+      bg-white dark:bg-zinc-900
+      border border-gray-200 dark:border-zinc-800
+      rounded-md">
 
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            className="w-full border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
-            onChange={(e)=>setusername(e.target.value)}
-            required
-          />
+      <form onSubmit={handleuser} className="space-y-3">
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="w-full border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
-            onChange={(e)=>setpassword(e.target.value)}
-            required
-          />
+        <input
+          type="email"
+          placeholder="Email or phone number"
+          className="w-full px-3 py-2 text-sm rounded-sm
+          bg-gray-50 dark:bg-zinc-800
+          border border-gray-300 dark:border-zinc-700
+          text-gray-900 dark:text-white
+          placeholder-gray-400 dark:placeholder-gray-500
+          focus:outline-none focus:border-gray-400 dark:focus:border-zinc-500"
+          onChange={(e) => setemail(e.target.value)}
+          required
+        />
 
-          <button
-            type="submit"
-            className="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-lg text-sm font-semibold"
-          >
-            Register
-          </button>
-        </form>
+        <input
+          type="text"
+          placeholder="Username"
+          className="w-full px-3 py-2 text-sm rounded-sm
+          bg-gray-50 dark:bg-zinc-800
+          border border-gray-300 dark:border-zinc-700
+          text-gray-900 dark:text-white
+          placeholder-gray-400 dark:placeholder-gray-500
+          focus:outline-none focus:border-gray-400 dark:focus:border-zinc-500"
+          onChange={(e) => setusername(e.target.value)}
+          required
+        />
 
-       
-        <div className="flex items-center my-6">
-          <div className="flex-grow h-px bg-gray-300"></div>
-          <span className="mx-3 text-gray-400 text-sm">OR</span>
-          <div className="flex-grow h-px bg-gray-300"></div>
-        </div>
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full px-3 py-2 text-sm rounded-sm
+          bg-gray-50 dark:bg-zinc-800
+          border border-gray-300 dark:border-zinc-700
+          text-gray-900 dark:text-white
+          placeholder-gray-400 dark:placeholder-gray-500
+          focus:outline-none focus:border-gray-400 dark:focus:border-zinc-500"
+          onChange={(e) => setpassword(e.target.value)}
+          required
+        />
 
-        {/* Google Button */}
         <button
-          onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-50"
+          type="submit"
+          className="w-full mt-3 py-2 rounded-md
+          bg-blue-500 hover:bg-blue-600
+          text-white text-sm font-semibold"
         >
-          <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            alt="google"
-            className="w-5 h-5"
-          />
-          <span className="text-sm font-medium">Continue with Google</span>
+          Sign up
         </button>
+      </form>
 
+      <div className="flex items-center my-5">
+        <div className="flex-grow h-px bg-gray-300 dark:bg-zinc-700"></div>
+        <span className="mx-3 text-xs font-semibold
+          text-gray-400 dark:text-gray-500">
+          OR
+        </span>
+        <div className="flex-grow h-px bg-gray-300 dark:bg-zinc-700"></div>
       </div>
-          <button onClick={() => navigate("/")} className="text-center text-sm text-green-400 mt-6">
-            Do have an account?Sign In
-            </button>
+
+      <button
+        onClick={handleGoogleLogin}
+        className="w-full flex items-center justify-center gap-2
+        text-sm font-semibold
+        text-blue-600 dark:text-blue-400"
+      >
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          alt="google"
+          className="w-4 h-4"
+        />
+        Log in with Google
+      </button>
     </div>
-  )
+
+    <div className="w-full max-w-sm mt-3 py-4 text-center
+      bg-white dark:bg-zinc-900
+      border border-gray-200 dark:border-zinc-800
+      rounded-md">
+
+      <span className="text-sm text-gray-700 dark:text-gray-300">
+        Have an account?
+        <button
+          onClick={() => navigate("/")}
+          className="ml-1 text-blue-500 dark:text-blue-400
+          font-semibold bg-transparent border-none p-0
+          hover:underline focus:outline-none"
+        >
+          Log in
+        </button>
+      </span>
+    </div>
+  </div>
+);
+
 }
