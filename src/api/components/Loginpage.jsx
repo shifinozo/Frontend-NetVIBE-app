@@ -3,6 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { api } from "../axios";
 
+
 export default function Login() {
   const [formData, setFormData] = useState({
     emailOrUsername: "",
@@ -25,6 +26,7 @@ export default function Login() {
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", res.data.user.username);
+      localStorage.setItem("userId", res.data.user._id);
 
       navigate(`/profile/${res.data.user.username}`);
     } catch (err) {
@@ -33,7 +35,8 @@ export default function Login() {
   };
 
   return (
-  <div className="min-h-screen w-full flex items-center justify-center bg-gray-900 px-4">
+  <div className="min-h-screen flex flex-col items-center justify-center 
+    bg-gray-100 dark:bg-black">
     <div className="flex flex-col items-center w-full max-w-md">
 
       <div className="w-full bg-gray-800 rounded-xl shadow-lg p-6">

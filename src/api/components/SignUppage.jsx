@@ -52,7 +52,7 @@ export default function SignUp() {
 
 return (
   <div className="min-h-screen flex flex-col items-center justify-center 
-    bg-gray-50 dark:bg-black">
+    bg-gray-100 dark:bg-black">
 
     <h1 className="mb-6 text-4xl font-semibold tracking-wide">
       <span className="text-transparent bg-clip-text bg-gradient-to-r 
@@ -137,7 +137,7 @@ return (
           alt="google"
           className="w-4 h-4"
         />
-        Log in with Google
+        SignUp in with Google
       </button>
     </div>
 

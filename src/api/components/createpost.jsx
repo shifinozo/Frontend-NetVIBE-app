@@ -1,0 +1,167 @@
+
+
+// // -------------------------------------------new one
+
+// import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { api } from "../axios";
+
+// export default function CreatePost() {
+//   const [file, setFile] = useState(null);
+//   const [loading, setLoading] = useState(false);
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (!file) {
+//       alert("Please select an image");
+//       return;
+//     }
+
+//     const formData = new FormData();
+//     formData.append("media", file);
+
+//     try {
+//       setLoading(true);
+//       await api.post("/posts", formData, {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//         },
+//       });
+
+//       navigate("/search"); // or home
+//     } catch (error) {
+//       console.error("Post upload failed:", error);
+//       alert("Post upload failed");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="max-w-md mx-auto mt-10 p-6 border rounded">
+//       <h2 className="text-xl font-semibold mb-4">Create Post</h2>
+
+//       <form onSubmit={handleSubmit} className="space-y-4">
+//         <input
+//           type="file"
+//           accept="image/*"
+//           onChange={(e) => setFile(e.target.files[0])}
+//         />
+
+//         <button
+//           type="submit"
+//           disabled={loading}
+//           className="w-full bg-blue-500 text-white py-2 rounded"
+//         >
+//           {loading ? "Posting..." : "Share"}
+//         </button>
+//       </form>
+//     </div>
+//   );
+// }
+
+
+// --------------------------
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../axios";
+import Sidebar from "../pages/navbar";
+
+export default function CreatePost() {
+  const [file, setFile] = useState(null);
+  const [caption, setCaption] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!file) {
+      alert("Please select an image");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("media", file);
+    formData.append("caption", caption);
+
+    try {
+      setLoading(true);
+
+      await api.post("/posts", formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      navigate("/Home"); 
+    } catch (error) {
+      console.error("Post upload failed:", error);
+      alert("Post upload failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+      {/* SIDEBAR */}
+      <div className="hidden md:block w-64 border-r bg-white">
+        <Sidebar />
+      </div>
+
+      {/* MAIN */}
+      <div className="flex-1 flex justify-center items-start pt-10">
+        <div className="w-full max-w-md bg-white border rounded-lg">
+          {/* HEADER */}
+          <div className="flex justify-between items-center px-4 py-3 border-b">
+            <h2 className="font-semibold">Create new post</h2>
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="text-blue-500 font-semibold disabled:text-blue-300"
+            >
+              {loading ? "Sharing..." : "Share"}
+            </button>
+          </div>
+
+          {/* IMAGE PREVIEW */}
+          <div className="h-72 bg-black flex items-center justify-center">
+            {file ? (
+              <img
+                src={URL.createObjectURL(file)}
+                alt="preview"
+                className="h-full object-contain"
+              />
+            ) : (
+              <label className="text-white cursor-pointer">
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
+                Select image
+              </label>
+            )}
+          </div>
+
+          {/* CAPTION */}
+          <div className="px-4 py-3 border-t">
+            <textarea
+              rows="3"
+              placeholder="Write a caption..."
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              className="w-full resize-none outline-none text-sm"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
