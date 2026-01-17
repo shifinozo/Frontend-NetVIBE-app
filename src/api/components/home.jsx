@@ -11,10 +11,12 @@ export default function Home() {
   const navigate=useNavigate()
 
   const userId = localStorage.getItem("userId");
-
+  
+  
   useEffect(() => {
     const fetchpost = api.get("/posts").then((res) => setPosts(res.data));
   }, []);
+  console.log("userId: ",userId);
 
   const toggleLike = async (id) => {
     await api.put(`/posts/${id}/like`);
@@ -46,12 +48,11 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* 🔹 SIDEBAR */}
+      
       <div className="hidden md:block fixed left-0 top-0 w-64 h-screen bg-white border-r">
         <Sidebar />
       </div>
 
-      {/* 🔹 FEED */}
       <main className="flex-1 ml-0 md:ml-64">
         <div className="max-w-xl mx-auto py-6 space-y-6">
           {posts.map((post) => {
@@ -79,10 +80,9 @@ export default function Home() {
                     </b>
                     </div>
 
-                {/* IMAGE */}
+                
                 <img src={post.media} className="w-full" alt="post" />
 
-                {/* ACTIONS */}
                 <div className="p-3 flex gap-4 text-xl">
                   <button onClick={() => toggleLike(post._id)}>
                     {liked ? (
@@ -97,7 +97,6 @@ export default function Home() {
                   </button>
                 </div>
 
-                {/* CAPTION */}
                 <p className="px-3 pb-3 text-sm">
                   <b>{post.user.username}</b> {post.caption}
                 </p>
@@ -107,7 +106,6 @@ export default function Home() {
         </div>
       </main>
 
-      {/* 🔹 COMMENT MODAL */}
       {activePost && (
         <div
           className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"

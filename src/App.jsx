@@ -13,6 +13,7 @@ import Searchuser from "./api/components/SearchUser";
 import CreatePost from "./api/components/createpost";
 import Homepage from "./api/pages/homepage";
 import NotificationPage from "./api/components/notification";
+import PostPage from "./api/pages/postpage";
 
 
 export default function App() {
@@ -29,7 +30,7 @@ export default function App() {
         <Route path="/Home" element={<Homepage/>}/>
         <Route path="/navbar" element={<Sidebar />} />
         <Route path="/EditProfile" element={<EditProfile />} />
-        {/* <Route path="/profile/:username" element={<ProfilePage />} /> */}
+        
 
         
         <Route path="/profile/:username" element={<ProfilePage />} />
@@ -39,6 +40,9 @@ export default function App() {
         <Route path="/create" element={<CreatePost />} />
 
         <Route path="/notifications" element={<NotificationPage/>} />
+
+        <Route path="/posts/:postId" element={<PostPage />} />
+
 
 
 

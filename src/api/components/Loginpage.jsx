@@ -26,6 +26,8 @@ export default function Login() {
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", res.data.user.username);
+      console.log("after loggeddd:",res.data.user._id); 
+      
       localStorage.setItem("userId", res.data.user._id);
 
       navigate(`/profile/${res.data.user.username}`);

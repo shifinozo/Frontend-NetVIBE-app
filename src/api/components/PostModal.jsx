@@ -34,9 +34,15 @@ export default function PostModal({ postId, onClose, onDelete }) {
 
   if (!post) return null;
 
+  
   const isOwner = post.user._id === userId;
   const isLiked = post.likes.includes(userId);
 
+  console.log("haloooo",isOwner);
+  console.log("heyyy",post.user._id,
+    "useriddd:",userId);
+  
+  
 
   const toggleLike = async () => {
     setPost((prev) => ({
@@ -47,11 +53,13 @@ export default function PostModal({ postId, onClose, onDelete }) {
     }));
 
     try {
-      await api.put(
+     
+      const res = await api.put(
         `/posts/${postId}/like`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
-      );
+      )
+      setPost(res.data)
     } catch (err) {
       console.error(err);
     }
