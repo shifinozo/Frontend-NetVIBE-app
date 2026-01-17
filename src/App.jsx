@@ -14,9 +14,31 @@ import CreatePost from "./api/components/createpost";
 import Homepage from "./api/pages/homepage";
 import NotificationPage from "./api/components/notification";
 import PostPage from "./api/pages/postpage";
+import { useEffect } from "react";
+import { socket } from "./api/socket";
+
+
 
 
 export default function App() {
+
+
+
+useEffect(() => {
+    const userId = localStorage.getItem("userId");
+
+    if (userId) {
+      socket.connect();
+      socket.emit("join", userId);
+      console.log("🟢 Socket connected & joined:", userId);
+    }
+
+    return () => {
+      socket.disconnect();
+      console.log("🔴 Socket disconnected");
+    };
+  }, []);
+
   return (
   
   <BrowserRouter>

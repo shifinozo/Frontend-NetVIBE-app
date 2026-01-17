@@ -8,6 +8,7 @@ import ProfileHeader from "./ProfileHeader";
 import ProfilePosts from "./ProfilePosts";
 import { api } from "../axios";
 import Sidebar from "../pages/navbar";
+import { socket } from "../socket";
 
 export default function UserProfile() {
   const { id } = useParams();
@@ -21,6 +22,30 @@ export default function UserProfile() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  
+  useEffect(() => {
+  socket.on("follow-request-rejected", ({ userId }) => {
+    if (userId === id) {
+      setRequestSent(false);
+      setIsFollowing(false);
+    }
+  });
+
+  socket.on("follow-request-accepted", ({ userId }) => {
+    if (userId === id) {
+      setRequestSent(false);
+      setIsFollowing(true);
+    }
+  });
+
+  return () => {
+    socket.off("follow-request-rejected");
+    socket.off("follow-request-accepted");
+  };
+}, [id]);
+
+
 
   useEffect(() => {
     const fetchProfile = async () => {

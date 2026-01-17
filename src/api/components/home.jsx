@@ -4,6 +4,8 @@ import { FaHeart, FaRegHeart, FaComment, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../pages/navbar";
 
+import { socket } from "../socket"
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [activePost, setActivePost] = useState(null);
@@ -18,33 +20,128 @@ export default function Home() {
   }, []);
   console.log("userId: ",userId);
 
-  const toggleLike = async (id) => {
-    await api.put(`/posts/${id}/like`);
-    setPosts((p) =>
-      p.map((post) =>
-        post._id === id
-          ? {
-              ...post,
-              likes: post.likes.includes(userId)
-                ? post.likes.filter((l) => l !== userId)
-                : [...post.likes, userId],
-            }
-          : post
-      )
-    );
-  };
+  // SOCKET CONNECT
+  // ===============================
+  useEffect(() => {
+    if (!userId) return;
 
-  const addComment = async () => {
-    const res = await api.post(`/posts/${activePost._id}/comment`, {
-      text: comment,
+    socket.connect();
+    socket.emit("join", userId);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [userId]);
+
+  // ===============================
+  // SOCKET LIKE / UNLIKE LISTENERS
+  // ===============================
+  useEffect(() => {
+    socket.on("post-liked", ({ postId, userId: likerId }) => {
+      setPosts((prev) =>
+        prev.map((post) =>
+          post._id === postId && !post.likes.includes(likerId)
+            ? { ...post, likes: [...post.likes, likerId] }
+            : post
+        )
+      );
+
+      if (activePost?._id === postId) {
+        setActivePost((prev) =>
+          prev && !prev.likes.includes(likerId)
+            ? { ...prev, likes: [...prev.likes, likerId] }
+            : prev
+        );
+      }
     });
-    
-    setComment("");
-    setActivePost(null);
-    // setActivePost(res.data);
 
+    socket.on("post-unliked", ({ postId, userId: likerId }) => {
+      setPosts((prev) =>
+        prev.map((post) =>
+          post._id === postId
+            ? { ...post, likes: post.likes.filter((id) => id !== likerId) }
+            : post
+        )
+      );
+
+      if (activePost?._id === postId) {
+        setActivePost((prev) =>
+          prev
+            ? { ...prev, likes: prev.likes.filter((id) => id !== likerId) }
+            : prev
+        );
+      }
+    });
+
+    return () => {
+      socket.off("post-liked");
+      socket.off("post-unliked");
+    };
+  }, [activePost]);
+// end of socket
+
+
+  const toggleLike = async (id) => {
+  const res = await api.put(`/posts/${id}/like`);
+
+  setPosts((prev) =>
+    prev.map((p) => (p._id === id ? res.data : p))
+  );
+
+  if (activePost?._id === id) {
+    setActivePost(res.data);
+  }
+};
+
+
+  
+  const addComment = async () => {
+  if (!comment.trim()) return;
+
+  try {
+    const res = await api.post(
+      `/posts/${activePost._id}/comment`,
+      { text: comment }
+    );
+
+    const updatedPost = res.data;
+
+    // update posts list
+    setPosts((prev) =>
+      prev.map((p) => (p._id === updatedPost._id ? updatedPost : p))
+    );
+
+    // keep modal open + update comments
+    setActivePost(updatedPost);
+    setComment("");
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const deleteComment = async (postId, commentId) => {
+  if (!window.confirm("Delete this comment?")) return;
+
+  try {
+    console.log("haloo");
     
-  };
+    const res = await api.delete(
+      `/posts/${postId}/comment/${commentId}`
+    );
+
+    const updatedPost = res.data;
+
+    setPosts((prev) =>
+      prev.map((p) => (p._id === updatedPost._id ? updatedPost : p))
+    );
+
+    setActivePost(updatedPost);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -122,20 +219,56 @@ export default function Home() {
                 <p className="text-gray-400">No comments yet</p>
               ) : (
                 
-                activePost.comments.map((c) => (
-                    <p key={c._id}>
+                // activePost.comments.map((c) => (
+                //     <p key={c._id}>
+                //         <b
+                //         onClick={() => {
+                //             navigate(`/user/${c.user._id}`);
+                //             setActivePost(null);
+                //         }}
+                //         className="cursor-pointer hover:underline"
+                //         >
+                //         {c.user.username}
+                //         </b>{" "}
+                //         {c.text}
+                //     </p>
+                //     ))
+                activePost.comments.map((c) => {
+                  const canDelete =
+                    c.user._id === userId || activePost.user._id === userId;
+
+                  return (
+                    <div
+                      key={c._id}
+                      className="flex justify-between items-center text-sm group"
+                    >
+                      <p>
                         <b
-                        onClick={() => {
+                          onClick={() => {
                             navigate(`/user/${c.user._id}`);
                             setActivePost(null);
-                        }}
-                        className="cursor-pointer hover:underline"
+                          }}
+                          className="cursor-pointer hover:underline"
                         >
-                        {c.user.username}
+                          {c.user.username}
                         </b>{" "}
                         {c.text}
-                    </p>
-                    ))
+                      </p>
+
+                      {canDelete && (
+                        <button
+                          onClick={() =>
+                            deleteComment(activePost._id, c._id)
+                          }
+                          className="text-red-500 opacity-0 group-hover:opacity-100"
+                        >
+                          <FaTrash size={12} />
+                        </button>
+                      )}
+                    </div>
+                  );
+                })
+
 
               )}
             </div>

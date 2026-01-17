@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { api } from "../axios";
 import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../socket"
 
-export default function PostModal({ postId, onClose, onDelete }) {
+export default function PostModal({ postId, onClose, onDelete, onUpdate }) {
   const [post, setPost] = useState(null);
   const [commentText, setCommentText] = useState("");
   const navigate =useNavigate()
@@ -45,12 +46,6 @@ export default function PostModal({ postId, onClose, onDelete }) {
   
 
   const toggleLike = async () => {
-    setPost((prev) => ({
-      ...prev,
-      likes: isLiked
-        ? prev.likes.filter((id) => id !== userId)
-        : [...prev.likes, userId],
-    }));
 
     try {
      
@@ -60,6 +55,8 @@ export default function PostModal({ postId, onClose, onDelete }) {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setPost(res.data)
+
+   
     } catch (err) {
       console.error(err);
     }
@@ -75,11 +72,29 @@ export default function PostModal({ postId, onClose, onDelete }) {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setPost(res.data);
+      onUpdate(res.data);
       setCommentText("");
     } catch (err) {
       console.error(err);
     }
   };
+
+    const deleteComment = async (commentId) => {
+    if (!window.confirm("Delete this comment?")) return;
+
+    try {
+      const res = await api.delete(
+        `/posts/${postId}/comment/${commentId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setPost(res.data);
+    } catch (err) {
+      console.error("Delete comment failed", err);
+    }
+  };
+
 
 
   const deletePost = async () => {
@@ -116,6 +131,7 @@ export default function PostModal({ postId, onClose, onDelete }) {
     }
   };
 
+  
   
 
   return (
@@ -172,19 +188,39 @@ export default function PostModal({ postId, onClose, onDelete }) {
               </div>
             )}
 
-            {post.comments.map((c) => (
-              <div key={c._id} className="text-sm">
-                
-                <span
-                  onClick={() => navigate(`/user/${c.user._id}`)}
-                  className="font-semibold mr-2 cursor-pointer hover:underline"
-                >
-                  {c.user.username}
-                </span>
+          {post.comments.map((c) => {
+            if (!c.user) return null;
 
-                {c.text}
-              </div>
-            ))}
+              const canDelete =
+                c.user._id === userId || post.user._id === userId;
+
+              return (
+                <div
+                  key={c._id}
+                  className="flex items-center justify-between text-sm group"
+                >
+                  <div>
+                    <span
+                      onClick={() => navigate(`/user/${c.user._id}`)}
+                      className="font-semibold mr-2 cursor-pointer hover:underline"
+                    >
+                      {c.user.username}
+                    </span>
+                    {c.text}
+                  </div>
+
+                  {canDelete && (
+                    <button
+                      onClick={() => deleteComment(c._id)}
+                      className="text-red-500 opacity-0 group-hover:opacity-100 ml-2"
+                    >
+                      <FaTrash size={12} />
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+
           </div>
 
           

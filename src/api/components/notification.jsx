@@ -5,10 +5,42 @@ import { useEffect, useState } from "react";
 import { api } from "../axios";
 import Sidebar from "../pages/navbar";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../socket";
+
 
 export default function NotificationPage() {
   const [notifications, setNotifications] = useState([]);
   const navigate =useNavigate()
+
+useEffect(() => {
+
+  socket.on("notification", (data) => {
+    setNotifications((prev) => [data, ...prev]);
+  });
+
+
+  socket.on("notification-remove", ({ type, sender, post }) => {
+      setNotifications((prev) =>
+        prev.filter(
+          (n) =>
+            !(
+              n.type === type &&
+              n.sender?._id === sender &&
+              n.post?._id === post
+            )
+        )
+      );
+    });
+
+
+  return () => {
+    socket.off("notification");
+    socket.off("notification-remove");
+  };
+}, []);
+
+
+
 
   useEffect(() => {
     fetchNotifications();
