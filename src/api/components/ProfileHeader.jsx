@@ -9,6 +9,7 @@ export default function ProfileHeader({
   isFollowing,
   requestSent,
   onFollow,
+  onMessage,
 }) {
   const navigate = useNavigate();
  
@@ -64,6 +65,16 @@ export default function ProfileHeader({
         </div>
 
         <p className="mt-4">{user.bio || "No bio yet"}</p>
+
+        {!isOwnProfile && isFollowing && (
+          <button
+            onClick={onMessage}
+            className="px-4 py-1 border rounded-md"
+          >
+            Message
+          </button>
+        )}
+
       </div>
     </div>
   );

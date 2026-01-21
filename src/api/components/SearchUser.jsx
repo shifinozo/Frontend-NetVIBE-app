@@ -14,7 +14,7 @@ export default function Searchuser() {
 
   const currentUserId = localStorage.getItem("userId");
 
-  /* 🔹 FETCH USERS ONCE */
+  // user fetch
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -28,7 +28,7 @@ export default function Searchuser() {
     fetchUsers();
   }, []);
 
-  /* 🔹 FOLLOW / UNFOLLOW */
+  
   const handleFollow = async (userId) => {
     try {
       const res = await api.post(`/follow/${userId}`);
@@ -45,20 +45,17 @@ export default function Searchuser() {
     }
   };
 
-  /* 🔹 FILTER USERS */
+  
   const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(query.toLowerCase())
   );
 
   return (
     <div className="flex">
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
       <div className="flex-1 ml-64 max-w-xl">
 
-        {/* Search Bar */}
         <div className="sticky top-0 bg-white border-b p-4 z-10">
           <div className="relative">
             <FiSearch className="absolute left-3 top-3 text-gray-400" />
@@ -73,7 +70,6 @@ export default function Searchuser() {
           </div>
         </div>
 
-        {/* Users List (PERMANENT) */}
         <div className="p-4 space-y-3">
           {filteredUsers.map((user) => (
             <div
@@ -82,7 +78,6 @@ export default function Searchuser() {
                          px-3 py-2 rounded-lg
                          hover:bg-gray-100 transition"
             >
-              {/* Profile */}
               <div
                 onClick={() => navigate(`/user/${user._id}`)}
                 className="flex items-center gap-3 cursor-pointer"
@@ -97,7 +92,6 @@ export default function Searchuser() {
                 </span>
               </div>
 
-              {/* Follow Button */}
               {user._id !== currentUserId && (
                 <button
                   onClick={() => handleFollow(user._id)}
@@ -114,7 +108,6 @@ export default function Searchuser() {
             </div>
           ))}
 
-          {/* Empty */}
           {filteredUsers.length === 0 && (
             <p className="text-center text-gray-400 mt-10">
               No users found

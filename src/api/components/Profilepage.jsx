@@ -29,9 +29,6 @@ export default function ProfilePage() {
 
         console.log(profileRes.data);
 
-        // localStorage.setItem("token", res.data.token);
-      // localStorage.setItem("username", res.data.user.username);
-      ///////important line/////
       console.log("after loggeddd:",profileRes.data.user._id);
       
       localStorage.setItem("userId", profileRes.data.user._id);
@@ -68,7 +65,7 @@ export default function ProfilePage() {
       </div>
 
       <main className="flex-1 px-4 md:px-10 py-8 w-full ml-0 md:ml-64">
-        {/* Profile Header */}
+
         <div className="flex flex-col md:flex-row gap-10 border-b pb-8">
           <img
             src={user.profilePic || "https://i.pinimg.com/736x/65/04/29/65042906985241278be17a79a7574652.jpg"}
@@ -100,7 +97,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Posts Grid */}
+
         {posts.length === 0 ? (
           <p className="text-center text-gray-500 mt-10">No posts yet</p>
         ) : (
@@ -122,7 +119,6 @@ export default function ProfilePage() {
         )}
       </main>
 
-      {/* ✅ MODAL */}
       {selectedPostId && (
        
       <PostModal

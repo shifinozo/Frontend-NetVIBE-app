@@ -12,8 +12,29 @@ export default function EditProfile() {
   const [isPrivate, setIsPrivate] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
   const [loading, setLoading] = useState(false);
+  // -----------------------
+  useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-  
+      const res = await api.get("/profile/getUserProfile/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUsername(res.data.user.username || "");
+      setBio(res.data.user.bio || "");
+      setIsPrivate(res.data.user.isPrivate || false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  fetchProfile();
+}, []);
+// -------------------------
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,19 +43,19 @@ export default function EditProfile() {
     const formData = new FormData();
     formData.append("username", username);
     formData.append("bio", bio);
-    formData.append("isPrivate", isPrivate);
+    formData.append("isPrivate", isPrivate? "true" : "false");
     if (profilePic) formData.append("profilePic", profilePic);
 
     try {
       const token = localStorage.getItem("token");
-      console.log("started to edit");
       
       const res = await api.put("/profile/edit", formData, { 
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+          // "Content-Type": "multipart/form-data",
         },
       });
+      console.log("started to edit");
 
       const newUsername = res.data.user.username;
       navigate(`/profile/${newUsername}`);

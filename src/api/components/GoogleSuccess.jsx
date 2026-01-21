@@ -6,15 +6,18 @@ export default function GoogleSuccess() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = params.get("token");
-    const username = params.get("username");
+  const token = params.get("token");
+  const username = params.get("username");
+  const userId = params.get("userId");
 
-    if (token && username) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("username", username);
-      navigate(`/profile/${username}`);
-    }
-  }, []);
+  if (token && username && userId) {
+    localStorage.setItem("token", token);
+    localStorage.setItem("username", username);
+    localStorage.setItem("userId", userId);
+
+    navigate(`/profile/${username}`);
+  }
+}, []);
 
   return <p>Logging in...</p>;
 }

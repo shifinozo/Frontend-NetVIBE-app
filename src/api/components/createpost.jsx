@@ -46,15 +46,14 @@ export default function CreatePost() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* SIDEBAR */}
+      
       <div className="hidden md:block w-64 border-r bg-white">
         <Sidebar />
       </div>
 
-      {/* MAIN */}
       <div className="flex-1 flex justify-center items-start pt-10">
         <div className="w-full max-w-md bg-white border rounded-lg">
-          {/* HEADER */}
+          
           <div className="flex justify-between items-center px-4 py-3 border-b">
             <h2 className="font-semibold">Create new post</h2>
             <button
@@ -66,7 +65,7 @@ export default function CreatePost() {
             </button>
           </div>
 
-          {/* IMAGE PREVIEW */}
+          
           <div className="h-72 bg-black flex items-center justify-center">
             {file ? (
               <img
@@ -87,7 +86,6 @@ export default function CreatePost() {
             )}
           </div>
 
-          {/* CAPTION */}
           <div className="px-4 py-3 border-t">
             <textarea
               rows="3"

@@ -20,8 +20,7 @@ export default function Home() {
   }, []);
   console.log("userId: ",userId);
 
-  // SOCKET CONNECT
-  // ===============================
+//  socket connect
   useEffect(() => {
     if (!userId) return;
 
@@ -33,9 +32,7 @@ export default function Home() {
     };
   }, [userId]);
 
-  // ===============================
-  // SOCKET LIKE / UNLIKE LISTENERS
-  // ===============================
+  // like unlike 
   useEffect(() => {
     socket.on("post-liked", ({ postId, userId: likerId }) => {
       setPosts((prev) =>
@@ -106,7 +103,7 @@ export default function Home() {
 
     const updatedPost = res.data;
 
-    // update posts list
+    // post update akkn
     setPosts((prev) =>
       prev.map((p) => (p._id === updatedPost._id ? updatedPost : p))
     );
@@ -218,21 +215,7 @@ const deleteComment = async (postId, commentId) => {
               {activePost.comments.length === 0 ? (
                 <p className="text-gray-400">No comments yet</p>
               ) : (
-                
-                // activePost.comments.map((c) => (
-                //     <p key={c._id}>
-                //         <b
-                //         onClick={() => {
-                //             navigate(`/user/${c.user._id}`);
-                //             setActivePost(null);
-                //         }}
-                //         className="cursor-pointer hover:underline"
-                //         >
-                //         {c.user.username}
-                //         </b>{" "}
-                //         {c.text}
-                //     </p>
-                //     ))
+               
                 activePost.comments.map((c) => {
                   const canDelete =
                     c.user._id === userId || activePost.user._id === userId;

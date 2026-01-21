@@ -1,6 +1,7 @@
 import{Home,Search,PlusSquare,Send,Heart,User ,MoreHorizontal} from "lucide-react"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../socket";
 
 
 export default function Sidebar() {
@@ -9,6 +10,7 @@ export default function Sidebar() {
   const [showMore, setShowMore] = useState(false);
 
   const handleLogout = () => {
+    socket.disconnect();
     localStorage.clear();
     navigate("/");
   };
@@ -24,7 +26,7 @@ export default function Sidebar() {
         <NavItem icon={<Home />} label="Home" onClick={()=>navigate("/Home")}/>
         <NavItem icon={<Search />} label="Search" onClick={() => navigate("/search")} />
         <NavItem icon={<PlusSquare />} label="Create" onClick={()=>navigate("/create")}/>
-        <NavItem icon={<Send />} label="Messages" />
+        <NavItem icon={<Send />} label="Messages"  onClick={()=>navigate("/Messages")}/>
         <NavItem icon={<Heart />} label="Notifications" onClick={()=>navigate("/notifications")}/>
         <NavItem
           icon={<User />}

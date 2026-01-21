@@ -54,15 +54,12 @@ export default function UserProfile() {
         const user = res.data.user;
 
         setProfile(user);
-
-        // ✅ FOLLOW STATE 
         setIsFollowing(
           user.followers.some(
             (f) => f._id.toString() === currentUserId
           )
         );
 
-        // ✅ FOLLOW REQUEST STATE
         setRequestSent(
           user.followRequests?.some(
             (r) => r._id.toString() === currentUserId
@@ -88,10 +85,10 @@ export default function UserProfile() {
       return;
     }
     
-    // 🔁 RE-FETCH PROFILE (SOURCE OF TRUTH)
+  //  refetch prof
     const profileRes = await api.get(`/users/${id}`);
     const user = profileRes.data.user;
-    console.log("workedddddddddddddddddddddd",profileRes)
+    console.log("workedd",profileRes)
     setProfile(user);
     
     setIsFollowing(
@@ -99,13 +96,22 @@ export default function UserProfile() {
         (f) => f._id.toString() === currentUserId
       )
     );
-    console.log("workedddddddddddddddddddddd",currentUserId);
+    console.log("workedd",currentUserId);
     
 
   } catch (err) {
     console.error(err);
   }
 };
+    const handleMessage = async () => {
+      try {
+        const res = await api.get(`/chat/conversation/${id}`);
+        navigate("/Messages", { state: res.data });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
 
 
   if (loading) return <p className="p-6">Loading...</p>;
@@ -113,13 +119,10 @@ export default function UserProfile() {
 
   return (
     <div className="flex min-h-screen bg-white">
-      {/* Sidebar */}
       <Sidebar />
 
-      {/* Main Content */}
       <div className="flex-1 ml-64 max-w-4xl mx-auto">
 
-        {/* Top Bar */}
         <div className="sticky top-0 z-20 bg-white border-b px-6 py-3 flex items-center gap-4">
           <button
             onClick={() => navigate(-1)}
@@ -133,7 +136,6 @@ export default function UserProfile() {
           </h1>
         </div>
 
-        {/* Profile */}
         <div className="px-6 py-6">
           <ProfileHeader
             user={profile}
@@ -141,6 +143,7 @@ export default function UserProfile() {
             isFollowing={isFollowing}
             requestSent={requestSent}
             onFollow={handleFollow}
+            onMessage={handleMessage}
           />
 
           {profile.isPrivate && !isFollowing ? (

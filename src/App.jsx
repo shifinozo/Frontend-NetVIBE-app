@@ -16,26 +16,30 @@ import NotificationPage from "./api/components/notification";
 import PostPage from "./api/pages/postpage";
 import { useEffect } from "react";
 import { socket } from "./api/socket";
+import Messages from "./api/pages/Messagepage";
 
 
 
 
 export default function App() {
 
-
-
 useEffect(() => {
     const userId = localStorage.getItem("userId");
 
-    if (userId) {
+    if (userId && !socket.connected) {
       socket.connect();
       socket.emit("join", userId);
       console.log("🟢 Socket connected & joined:", userId);
     }
 
+    // ✅ GLOBAL LISTENERS 
+    socket.on("online-users", (users) => {
+      console.log("🟢 Online users:", users);
+    });
+
     return () => {
-      socket.disconnect();
-      console.log("🔴 Socket disconnected");
+      // ❌ DO NOT disconnect socket here
+      socket.off("online-users");
     };
   }, []);
 
@@ -64,6 +68,9 @@ useEffect(() => {
         <Route path="/notifications" element={<NotificationPage/>} />
 
         <Route path="/posts/:postId" element={<PostPage />} />
+
+        <Route path="/Messages" element={<Messages />} />
+
 
 
 
