@@ -21,3 +21,4 @@ export default function GoogleSuccess() {
 
   return <p>Logging in...</p>;
 }
+

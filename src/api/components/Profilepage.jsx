@@ -77,7 +77,7 @@ export default function ProfilePage() {
             <div className="flex items-center gap-4">
               <h2 className="text-2xl font-light">{user.username}</h2>
               <button
-                onClick={() => navigate("/EditProfile")}
+                onClick={() => navigate("/editProfile")}
                 className="border px-4 py-1 rounded-md text-sm"
               >
                 Edit Profile

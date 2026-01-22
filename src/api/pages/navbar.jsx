@@ -23,10 +23,10 @@ export default function Sidebar() {
       </div>
 
       <div className="flex flex-col gap-6 text-gray-800 flex-1">
-        <NavItem icon={<Home />} label="Home" onClick={()=>navigate("/Home")}/>
+        <NavItem icon={<Home />} label="Home" onClick={()=>navigate("/home")}/>
         <NavItem icon={<Search />} label="Search" onClick={() => navigate("/search")} />
         <NavItem icon={<PlusSquare />} label="Create" onClick={()=>navigate("/create")}/>
-        <NavItem icon={<Send />} label="Messages"  onClick={()=>navigate("/Messages")}/>
+        <NavItem icon={<Send />} label="Messages"  onClick={()=>navigate("/messages")}/>
         <NavItem icon={<Heart />} label="Notifications" onClick={()=>navigate("/notifications")}/>
         <NavItem
           icon={<User />}
