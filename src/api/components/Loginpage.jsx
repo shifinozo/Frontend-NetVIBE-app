@@ -10,6 +10,7 @@ export default function Login() {
     password: "",
   });
   const navigate = useNavigate();
+  console.log("LOGIN API HIT");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,6 +33,7 @@ export default function Login() {
 
       navigate(`/profile/${res.data.user.username}`);
     } catch (err) {
+      console.log("LOGIN API HIT");
       alert(err.response?.data?.message || "Login failed");
     }
   };

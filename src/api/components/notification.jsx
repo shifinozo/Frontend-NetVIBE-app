@@ -76,51 +76,60 @@ useEffect(() => {
           <p className="text-gray-400 text-center">No notifications</p>
         )}
 
+        
         {notifications.map((n) => (
-          <div
-            key={n._id}
-            className="flex items-center gap-3 p-3 border rounded mb-3"
-          >
-            <img
-              src={n.sender.profilePic || "/avatar.png"}
-              className="w-10 h-10 rounded-full"
-            />
-
-            <div className="flex-1">
-              <p className="text-sm">
-                <b onClick={() => navigate(`/user/${n.sender._id}`)}
-                        className="cursor-pointer hover:underline">
-                          {n.sender.username}</b>{" "}
-                {n.type === "follow" && n.isRequest
-                  ? "requested to follow you"
-                  : n.type === "follow"
-                  ? "started following you"
-                  : n.type === "like"
-                  ? "liked your post"
-                  : "commented on your post"}
-              </p>
-            </div>
-
-           
-            {n.type === "follow" && n.isRequest && (
-              <>
-                <button onClick={(e) => acceptRequest(e, n.sender._id)}>Accept</button>
-                <button onClick={(e) => rejectRequest(e, n.sender._id)}>Reject</button>
-              </>
-            )}
-
-
-            {n.post && (
+            <div
+              key={n._id}
+              className="flex items-center gap-3 p-3 border rounded mb-3"
+            >
               <img
-                onClick={() => navigate(`/posts/${n.post._id}`)}
-                src={n.post.media}
-                className="w-12 h-12 object-cover rounded cursor-pointer"
+                src={n.sender?.profilePic || "/avatar.png"}
+                className="w-10 h-10 rounded-full"
+                alt="avatar"
               />
-            )}
+
+              <div className="flex-1">
+                <p className="text-sm">
+                  <b
+                    onClick={() =>
+                      n.sender && navigate(`/user/${n.sender._id}`)
+                    }
+                    className="cursor-pointer hover:underline"
+                  >
+                    {n.sender?.username || "Unknown user"}
+                  </b>{" "}
+                  {n.type === "follow" && n.isRequest
+                    ? "requested to follow you"
+                    : n.type === "follow"
+                    ? "started following you"
+                    : n.type === "like"
+                    ? "liked your post"
+                    : "commented on your post"}
+                </p>
+              </div>
+
+              {n.type === "follow" && n.isRequest && n.sender && (
+                <>
+                  <button onClick={(e) => acceptRequest(e, n.sender._id)}>
+                    Accept
+                  </button>
+                  <button onClick={(e) => rejectRequest(e, n.sender._id)}>
+                    Reject
+                  </button>
+                </>
+              )}
+
+              {n.post?.media && (
+                <img
+                  onClick={() => navigate(`/posts/${n.post._id}`)}
+                  src={n.post.media}
+                  className="w-12 h-12 object-cover rounded cursor-pointer"
+                />
+              )}
+            </div>
+          ))}
 
 
-          </div>
-        ))}
       </div>
     </div>
   );
