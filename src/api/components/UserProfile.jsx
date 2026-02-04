@@ -15,35 +15,35 @@ export default function UserProfile() {
   const navigate = useNavigate();
 
   const currentUserId = localStorage.getItem("userId");
-  
-  
+
+
 
   const [profile, setProfile] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  
+
   useEffect(() => {
-  socket.on("follow-request-rejected", ({ userId }) => {
-    if (userId === id) {
-      setRequestSent(false);
-      setIsFollowing(false);
-    }
-  });
+    socket.on("follow-request-rejected", ({ userId }) => {
+      if (userId === id) {
+        setRequestSent(false);
+        setIsFollowing(false);
+      }
+    });
 
-  socket.on("follow-request-accepted", ({ userId }) => {
-    if (userId === id) {
-      setRequestSent(false);
-      setIsFollowing(true);
-    }
-  });
+    socket.on("follow-request-accepted", ({ userId }) => {
+      if (userId === id) {
+        setRequestSent(false);
+        setIsFollowing(true);
+      }
+    });
 
-  return () => {
-    socket.off("follow-request-rejected");
-    socket.off("follow-request-accepted");
-  };
-}, [id]);
+    return () => {
+      socket.off("follow-request-rejected");
+      socket.off("follow-request-accepted");
+    };
+  }, [id]);
 
 
 
@@ -76,41 +76,41 @@ export default function UserProfile() {
   }, [id, currentUserId]);
 
   const handleFollow = async () => {
-  try {
-    
-    const res = await api.post(`/follow/${id}`);
-    
-    if (res.data.requested) {
-      setRequestSent(true);
-      return;
-    }
-    
-  //  refetch prof
-    const profileRes = await api.get(`/users/${id}`);
-    const user = profileRes.data.user;
-    console.log("workedd",profileRes)
-    setProfile(user);
-    
-    setIsFollowing(
-      user.followers.some(
-        (f) => f._id.toString() === currentUserId
-      )
-    );
-    console.log("workedd",currentUserId);
-    
+    try {
 
-  } catch (err) {
-    console.error(err);
-  }
-};
-    const handleMessage = async () => {
-      try {
-        const res = await api.get(`/chat/conversation/${id}`);
-        navigate("/Messages", { state: res.data });
-      } catch (err) {
-        console.error(err);
+      const res = await api.post(`/follow/${id}`);
+
+      if (res.data.requested) {
+        setRequestSent(true);
+        return;
       }
-    };
+
+      //  refetch prof
+      const profileRes = await api.get(`/users/${id}`);
+      const user = profileRes.data.user;
+      console.log("workedd", profileRes)
+      setProfile(user);
+
+      setIsFollowing(
+        user.followers.some(
+          (f) => f._id.toString() === currentUserId
+        )
+      );
+      console.log("workedd", currentUserId);
+
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const handleMessage = async () => {
+    try {
+      const res = await api.get(`/chat/conversation/${id}`);
+      navigate("/Messages", { state: res.data });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
 
 
@@ -121,9 +121,9 @@ export default function UserProfile() {
     <div className="flex min-h-screen bg-white">
       <Sidebar />
 
-      <div className="flex-1 ml-64 max-w-4xl mx-auto">
+      <div className="flex-1 ml-0 md:ml-64 max-w-4xl mx-auto pt-20 pb-20 md:py-0">
 
-        <div className="sticky top-0 z-20 bg-white border-b px-6 py-3 flex items-center gap-4">
+        <div className="hidden md:flex sticky top-0 z-20 bg-white border-b px-6 py-3 items-center gap-4">
           <button
             onClick={() => navigate(-1)}
             className="p-2 rounded-full hover:bg-gray-100 transition"

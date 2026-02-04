@@ -28,7 +28,7 @@
 // //     fetchUsers();
 // //   }, []);
 
-  
+
 // //   const handleFollow = async (userId) => {
 // //     try {
 // //       const res = await api.post(`/follow/${userId}`);
@@ -45,7 +45,7 @@
 // //     }
 // //   };
 
-  
+
 // //   const filteredUsers = users.filter((user) =>
 // //     user.username.toLowerCase().includes(query.toLowerCase())
 // //   );
@@ -298,7 +298,7 @@ export default function Searchuser() {
       <Sidebar />
 
       {/* Main Content */}
-      <div className="flex-1 ml-64 flex justify-center">
+      <div className="flex-1 ml-0 md:ml-64 flex justify-center pt-16 pb-20 md:py-0">
         <div className="w-full max-w-2xl">
 
           {/* Search Bar */}
@@ -358,10 +358,9 @@ export default function Searchuser() {
                     onClick={() => handleFollow(user._id)}
                     className={`
                       text-sm font-medium px-4 py-1.5 rounded-full transition
-                      ${
-                        user.isFollowing
-                          ? "border border-gray-300 text-gray-700 hover:bg-gradient-to-r hover:from-purple-500 hover:to-cyan-400 hover:text-white"
-                          : "bg-gradient-to-r from-purple-500 to-cyan-400 text-white hover:opacity-90"
+                      ${user.isFollowing
+                        ? "border border-gray-300 text-gray-700 hover:bg-gradient-to-r hover:from-purple-500 hover:to-cyan-400 hover:text-white"
+                        : "bg-gradient-to-r from-purple-500 to-cyan-400 text-white hover:opacity-90"
                       }
                     `}
                   >

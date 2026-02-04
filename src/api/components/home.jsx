@@ -13,8 +13,8 @@
 //   const navigate=useNavigate()
 
 //   const userId = localStorage.getItem("userId");
-  
-  
+
+
 //   useEffect(() => {
 //     const fetchpost = api.get("/posts").then((res) => setPosts(res.data));
 //   }, []);
@@ -91,7 +91,7 @@
 // };
 
 
-  
+
 //   const addComment = async () => {
 //   if (!comment.trim()) return;
 
@@ -121,7 +121,7 @@
 
 //   try {
 //     console.log("haloo");
-    
+
 //     const res = await api.delete(
 //       `/posts/${postId}/comment/${commentId}`
 //     );
@@ -142,7 +142,7 @@
 
 //   return (
 //     <div className="flex min-h-screen bg-gray-50">
-      
+
 //       <div className="hidden md:block fixed left-0 top-0 w-64 h-screen bg-white border-r">
 //         <Sidebar />
 //       </div>
@@ -174,7 +174,7 @@
 //                     </b>
 //                     </div>
 
-                
+
 //                 <img src={post.media} className="w-full" alt="post" />
 
 //                 <div className="p-3 flex gap-4 text-xl">
@@ -215,7 +215,7 @@
 //               {activePost.comments.length === 0 ? (
 //                 <p className="text-gray-400">No comments yet</p>
 //               ) : (
-               
+
 //                 activePost.comments.map((c) => {
 //                   const canDelete =
 //                     c.user._id === userId || activePost.user._id === userId;
@@ -287,11 +287,12 @@ import { socket } from "../socket";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
-  const [activePost, setActivePost] = useState(null);
   const [comment, setComment] = useState("");
-  const navigate = useNavigate();
-
+  const [activePost, setActivePost] = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState(null); // {postId, commentId}
   const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     api.get("/posts").then((res) => setPosts(res.data));
@@ -351,43 +352,50 @@ export default function Home() {
   };
 
   const deleteComment = async (postId, commentId) => {
-    if (!window.confirm("Delete this comment?")) return;
-    const res = await api.delete(`/posts/${postId}/comment/${commentId}`);
-    setPosts((prev) =>
-      prev.map((p) => (p._id === res.data._id ? res.data : p))
-    );
-    setActivePost(res.data);
+    try {
+      const res = await api.delete(
+        `/posts/${postId}/comment/${commentId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setPosts((prev) =>
+        prev.map((p) => (p._id === postId ? res.data : p))
+      );
+      if (activePost && activePost._id === postId) {
+        setActivePost(res.data);
+      }
+      setDeleteConfirm(null);
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
   };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
 
       {/* SIDEBAR */}
-      <div className="hidden md:block fixed w-64 h-screen bg-white border-r">
-        <Sidebar />
-      </div>
+      <Sidebar />
 
       {/* FEED */}
-      <main className="flex-1 ml-0 md:ml-64 px-4 py-8">
-        <div className="max-w-xl mx-auto space-y-8">
+      <main className="flex-1 ml-0 md:ml-64 pt-20 pb-20 md:py-8">
+        <div className="max-w-xl mx-auto">
           {posts.map((post) => {
             const liked = post.likes.includes(userId);
 
             return (
               <div
                 key={post._id}
-                className="bg-white border rounded-2xl shadow-sm overflow-hidden"
+                className="bg-white border-b border-gray-200 mb-4 md:mb-6"
               >
                 {/* USER */}
-                <div className="flex items-center gap-3 px-4 py-3">
+                <div className="flex items-center gap-3 px-3 md:px-4 py-3">
                   <img
                     src={post.user.profilePic || "/avatar.png"}
                     onClick={() => navigate(`/user/${post.user._id}`)}
-                    className="w-9 h-9 rounded-full object-cover cursor-pointer"
+                    className="w-8 h-8 rounded-full object-cover cursor-pointer"
                   />
                   <span
                     onClick={() => navigate(`/user/${post.user._id}`)}
-                    className="font-semibold cursor-pointer hover:underline"
+                    className="font-semibold text-sm cursor-pointer hover:opacity-70"
                   >
                     {post.user.username}
                   </span>
@@ -401,7 +409,7 @@ export default function Home() {
                 />
 
                 {/* ACTIONS */}
-                <div className="flex items-center gap-4 px-4 py-3 text-xl">
+                <div className="flex items-center gap-4 px-3 md:px-4 pt-3 text-2xl">
                   <button onClick={() => toggleLike(post._id)}>
                     {liked ? (
                       <FaHeart className="text-red-500" />
@@ -415,13 +423,27 @@ export default function Home() {
                   </button>
                 </div>
 
+                {/* LIKES & COMMENTS COUNT */}
+                <div className="px-3 md:px-4 pt-2 pb-1 flex items-center gap-3 text-sm">
+                  {post.likes.length > 0 && (
+                    <span className="font-semibold">
+                      {post.likes.length} {post.likes.length === 1 ? 'like' : 'likes'}
+                    </span>
+                  )}
+                  {post.comments.length > 0 && (
+                    <span className="text-gray-600">
+                      {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
+                    </span>
+                  )}
+                </div>
+
                 {/* CAPTION */}
-                <p className="px-4 pb-4 text-sm">
-                  <span className="font-semibold mr-1">
+                <div className="px-3 md:px-4 py-2 pb-3 text-sm">
+                  <span className="font-semibold mr-2">
                     {post.user.username}
                   </span>
-                  {post.caption}
-                </p>
+                  <span className="text-gray-900">{post.caption}</span>
+                </div>
               </div>
             );
           })}
@@ -478,9 +500,7 @@ export default function Home() {
 
                     {canDelete && (
                       <button
-                        onClick={() =>
-                          deleteComment(activePost._id, c._id)
-                        }
+                        onClick={() => setDeleteConfirm({ postId: activePost._id, commentId: c._id })}
                         className="text-red-500 opacity-0 group-hover:opacity-100"
                       >
                         <FaTrash size={12} />
@@ -507,6 +527,30 @@ export default function Home() {
                 text-white"
               >
                 Post
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DELETE CONFIRMATION MODAL */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60]">
+          <div className="bg-white rounded-2xl shadow-xl p-6 max-w-sm mx-4">
+            <h3 className="text-lg font-semibold mb-2">Delete Comment</h3>
+            <p className="text-gray-600 mb-6">Are you sure you want to delete this comment?</p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => deleteComment(deleteConfirm.postId, deleteConfirm.commentId)}
+                className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white font-medium"
+              >
+                Delete
               </button>
             </div>
           </div>

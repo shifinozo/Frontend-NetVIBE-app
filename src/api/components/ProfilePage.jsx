@@ -17,27 +17,27 @@ export default function ProfilePage() {
 
 
   useEffect(() => {
-  const fetchProfileAndPosts = async () => {
-    try {
-      const profileRes = await api.get(`/profile/${username}`);
+    const fetchProfileAndPosts = async () => {
+      try {
+        const profileRes = await api.get(`/profile/${username}`);
 
-      localStorage.setItem("userId", profileRes.data.user._id);
-      setProfile(profileRes.data);
+        localStorage.setItem("userId", profileRes.data.user._id);
+        setProfile(profileRes.data);
 
-      const postsRes = await api.get(
-        `/posts/user/${profileRes.data.user._id}`
-      );
+        const postsRes = await api.get(
+          `/posts/user/${profileRes.data.user._id}`
+        );
 
-      setPosts(postsRes.data);
-    } catch (error) {
-      console.error("Profile load failed", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setPosts(postsRes.data);
+      } catch (error) {
+        console.error("Profile load failed", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchProfileAndPosts();
-}, [username]);
+    fetchProfileAndPosts();
+  }, [username]);
 
 
   if (loading)
@@ -59,17 +59,15 @@ export default function ProfilePage() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className="fixed md:static w-64 h-screen bg-white border-r">
-        <Sidebar />
-      </div>
+      <Sidebar />
 
       {/* Main */}
-      <main className="flex-1 ml-0 md:ml-14 px-4 md:px-10 py-8">
+      <main className="flex-1 ml-0 md:ml-64 px-4 md:px-8 py-8 pt-20 pb-20 md:py-8">
 
-        {/* Profile Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+        {/* Profile Section */}
+        <div className="max-w-4xl mx-auto">
 
-          <div className="flex flex-col md:flex-row gap-8">
+          <div className="flex flex-row gap-4 md:gap-12 items-start pb-4 md:pb-8 border-b border-gray-200">
 
             {/* Avatar */}
             <img
@@ -78,50 +76,47 @@ export default function ProfilePage() {
                 "https://i.pinimg.com/736x/65/04/29/65042906985241278be17a79a7574652.jpg"
               }
               alt="profile"
-              className="w-32 h-32 md:w-36 md:h-36 rounded-full object-cover border"
+              className="w-20 h-20 md:w-36 md:h-36 rounded-full object-cover flex-shrink-0"
             />
 
             {/* Info */}
             <div className="flex-1">
 
-              <div className="flex items-center gap-4">
-                <h2 className="text-2xl font-semibold bg-gradient-to-r from-purple-500 to-cyan-500 text-transparent bg-clip-text">
+              {/* Username + Button Row */}
+              <div className="flex items-center justify-between mb-4 md:mb-5">
+                <h2 className="text-xl md:text-2xl font-light text-gray-900">
                   {user.username}
                 </h2>
 
                 <button
                   onClick={() => navigate("/editProfile")}
-                  className="
-                    px-4 py-1.5 rounded-full text-sm font-medium
-                    border border-gray-300
-                    hover:bg-gray-100 transition
-                  "
+                  className="px-4 md:px-6 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-semibold text-gray-900 transition"
                 >
-                  Edit Profile
+                  Edit profile
                 </button>
               </div>
 
               {/* Stats */}
-              <div className="flex gap-8 mt-5 text-sm">
+              <div className="flex gap-6 md:gap-10 mb-4 text-sm md:text-base">
                 <span>
-                  <strong className="text-gray-900">{stats.posts}</strong>{" "}
-                  <span className="text-gray-500">posts</span>
+                  <strong className="text-gray-900 font-semibold">{stats.posts}</strong>{" "}
+                  <span className="text-gray-600">posts</span>
                 </span>
                 <span>
-                  <strong className="text-gray-900">{stats.followers}</strong>{" "}
-                  <span className="text-gray-500">followers</span>
+                  <strong className="text-gray-900 font-semibold">{stats.followers}</strong>{" "}
+                  <span className="text-gray-600">followers</span>
                 </span>
                 <span>
-                  <strong className="text-gray-900">{stats.following}</strong>{" "}
-                  <span className="text-gray-500">following</span>
+                  <strong className="text-gray-900 font-semibold">{stats.following}</strong>{" "}
+                  <span className="text-gray-600">following</span>
                 </span>
               </div>
 
               {/* Bio */}
-              <div className="mt-5 text-sm">
-                <p className="font-medium text-gray-900">{user.username}</p>
-                <p className="text-gray-600 max-w-md">
-                  {user.bio || "No bio yet"}
+              <div className="text-sm">
+                <p className="font-semibold text-gray-900">{user.username}</p>
+                <p className="text-gray-700 mt-1 whitespace-pre-wrap">
+                  {user.bio || ""}
                 </p>
               </div>
             </div>

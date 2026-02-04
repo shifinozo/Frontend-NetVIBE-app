@@ -173,7 +173,13 @@ export default function Messages() {
       <Sidebar />
 
       {/* Left Panel */}
-      <div className="w-1/3 border-r bg-white ml-64">
+      <div
+        className={`
+          border-r bg-white ml-0 md:ml-64 transition-all duration-300
+          ${activeChat ? "hidden md:block w-1/3" : "w-full md:w-1/3"}
+          pb-20 md:pb-0
+        `}
+      >
 
         {/* Search Bar */}
         <div className="p-3 border-b">
@@ -187,16 +193,15 @@ export default function Messages() {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex gap-2 p-3 border-b">
+        <div className="flex gap-2 p-3 border-b overflow-x-auto">
           {["all", "mutual", "oneway", "stranger"].map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1 rounded text-sm font-medium transition
-                ${
-                  filter === f
-                    ? "bg-gradient-to-r from-purple-500 to-cyan-400 text-white shadow-md"
-                    : "bg-gray-200 text-gray-800 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-300 hover:text-white"
+              className={`px-3 py-1 rounded text-sm font-medium transition whitespace-nowrap
+                ${filter === f
+                  ? "bg-gradient-to-r from-purple-500 to-cyan-400 text-white shadow-md"
+                  : "bg-gray-200 text-gray-800 hover:bg-gradient-to-r hover:from-purple-400 hover:to-cyan-300 hover:text-white"
                 }`}
             >
               {f}
@@ -214,7 +219,7 @@ export default function Messages() {
             key={c._id}
             onClick={() => setActiveChat(c)}
             className={`flex items-center gap-3 p-4 border-b cursor-pointer rounded-lg transition
-              ${activeChat?._id === c._id 
+              ${activeChat?._id === c._id
                 ? "bg-gradient-to-r from-purple-100 to-cyan-100 border-l-4 border-purple-500"
                 : "hover:bg-purple-50"
               }`}
@@ -236,11 +241,30 @@ export default function Messages() {
       </div>
 
       {/* Right Panel */}
-      <div className="flex-1">
+      <div
+        className={`
+          flex-1 bg-gray-50
+          ${!activeChat ? "hidden md:flex items-center justify-center" : "flex flex-col w-full"}
+          pb-20 md:pb-0
+        `}
+      >
         {activeChat ? (
-          <ChatWindow conversation={activeChat} />
+          <>
+            {/* Mobile Back Button */}
+            <div className="md:hidden p-3 bg-white border-b flex items-center gap-2 sticky top-0 z-10">
+              <button
+                onClick={() => setActiveChat(null)}
+                className="text-sm font-semibold text-purple-600"
+              >
+                ← Back
+              </button>
+              <span className="font-bold">{activeChat.otherUser.username}</span>
+            </div>
+
+            <ChatWindow conversation={activeChat} />
+          </>
         ) : (
-          <p className="p-6 text-gray-400">Select a chat</p>
+          <p className="text-gray-400">Select a chat to start messaging</p>
         )}
       </div>
     </div>

@@ -48,7 +48,7 @@
 
 //     try {
 //       const token = localStorage.getItem("token");
-      
+
 //       const res = await api.put("/profile/edit", formData, { 
 //         headers: {
 //           Authorization: `Bearer ${token}`,
@@ -236,12 +236,10 @@ export default function EditProfile() {
     <div className="flex min-h-screen bg-gray-100">
 
       {/* Sidebar */}
-      <div className="fixed md:static w-64 h-screen bg-white border-r">
-        <Sidebar />
-      </div>
+      <Sidebar />
 
       {/* Main */}
-      <main className="flex-1 ml-0 md:ml-64 px-4 md:px-10 py-10 flex justify-center">
+      <main className="flex-1 ml-0 md:ml-64 px-4 md:px-10 py-10 pt-20 pb-20 md:py-10 flex justify-center">
 
         {/* Card */}
         <form

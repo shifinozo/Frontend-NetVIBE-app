@@ -15,7 +15,7 @@
 //   const token = localStorage.getItem("token");
 //   const userId = localStorage.getItem("userId");
 
-  
+
 //   useEffect(() => {
 //     if (!postId) return;
 
@@ -35,20 +35,20 @@
 
 //   if (!post) return null;
 
-  
+
 //   const isOwner = post.user._id === userId;
 //   const isLiked = post.likes.includes(userId);
 
 //   console.log("haloooo",isOwner);
 //   console.log("heyyy",post.user._id,
 //     "useriddd:",userId);
-  
-  
+
+
 
 //   const toggleLike = async () => {
 
 //     try {
-     
+
 //       const res = await api.put(
 //         `/posts/${postId}/like`,
 //         {},
@@ -56,7 +56,7 @@
 //       )
 //       setPost(res.data)
 
-   
+
 //     } catch (err) {
 //       console.error(err);
 //     }
@@ -99,7 +99,7 @@
 
 //   const deletePost = async () => {
 //     console.log("started..");
-    
+
 //     if (!window.confirm("Delete this post?")) return;
 
 //     try {
@@ -111,28 +111,28 @@
 
 //       if(res.status === 200){
 //         console.log("successs");
-        
+
 //         onDelete(postId);
 //         onClose();
 //       }else{
 //         console.log("something wrong...");
-        
-//       }
-      
 
-     
+//       }
+
+
+
 //     } catch (err) {
 //       console.error("Delete failed", err);
 
 //       if(err.response.status === 404){
 //         console.log("");
-        
+
 //       }
 //     }
 //   };
 
-  
-  
+
+
 
 //   return (
 //     <div
@@ -143,7 +143,7 @@
 //         className="bg-white w-full max-w-4xl h-[85vh] rounded-lg flex overflow-hidden relative"
 //         onClick={(e) => e.stopPropagation()}
 //       >
-        
+
 //         <div className="flex-1 bg-black flex items-center justify-center">
 //           <img
 //             src={post.media}
@@ -152,9 +152,9 @@
 //           />
 //         </div>
 
-       
+
 //         <div className="w-[380px] flex flex-col border-l">
-          
+
 //           <div className="flex items-center justify-between p-4 border-b">
 //             <div className="flex items-center gap-3">
 //               <img
@@ -177,7 +177,7 @@
 //             )}
 //           </div>
 
-         
+
 //           <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
 //             {post.caption && (
 //               <div className="text-sm">
@@ -223,7 +223,7 @@
 
 //           </div>
 
-          
+
 //           <div className="px-4 py-2 border-t">
 //             <button onClick={toggleLike} className="text-2xl">
 //               {isLiked ? (
@@ -238,7 +238,7 @@
 //             </div>
 //           </div>
 
-          
+
 //           <div className="flex items-center border-t px-3 py-2">
 //             <input
 //               type="text"
@@ -257,7 +257,7 @@
 //           </div>
 //         </div>
 
-        
+
 //         {/* <button
 //           onClick={onClose}
 //           className="absolute top-3 right-3 text-white text-3xl"
@@ -370,12 +370,12 @@ export default function PostModal({ postId, onClose, onDelete, onUpdate }) {
       <div
         onClick={(e) => e.stopPropagation()}
         className="bg-white dark:bg-zinc-900 
-        w-full max-w-4xl h-[85vh] 
+        w-full max-w-4xl h-[90vh] md:h-[85vh] 
         rounded-xl shadow-xl 
-        flex overflow-hidden"
+        flex flex-col md:flex-row overflow-hidden"
       >
         {/* LEFT – IMAGE */}
-        <div className="flex-1 bg-black flex items-center justify-center">
+        <div className="w-full h-[40vh] md:h-auto md:flex-1 bg-black flex items-center justify-center">
           <img
             src={post.media}
             alt="post"
@@ -384,8 +384,8 @@ export default function PostModal({ postId, onClose, onDelete, onUpdate }) {
         </div>
 
         {/* RIGHT – CONTENT */}
-        <div className="w-[380px] flex flex-col border-l dark:border-zinc-700">
-          
+        <div className="w-full md:w-[380px] flex flex-col border-t md:border-t-0 md:border-l dark:border-zinc-700 h-[50vh] md:h-auto">
+
           {/* HEADER */}
           <div className="flex items-center justify-between p-4 border-b dark:border-zinc-700">
             <div className="flex items-center gap-3">

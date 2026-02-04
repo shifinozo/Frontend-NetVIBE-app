@@ -46,14 +46,14 @@
 
 //   return (
 //     <div className="flex min-h-screen bg-gray-50">
-      
+
 //       <div className="hidden md:block w-64 border-r bg-white">
 //         <Sidebar />
 //       </div>
 
 //       <div className="flex-1 flex justify-center items-start pt-10">
 //         <div className="w-full max-w-md bg-white border rounded-lg">
-          
+
 //           <div className="flex justify-between items-center px-4 py-3 border-b">
 //             <h2 className="font-semibold">Create new post</h2>
 //             <button
@@ -65,7 +65,7 @@
 //             </button>
 //           </div>
 
-          
+
 //           <div className="h-72 bg-black flex items-center justify-center">
 //             {file ? (
 //               <img
@@ -146,12 +146,10 @@ export default function CreatePost() {
     <div className="flex min-h-screen bg-gray-100">
 
       {/* Sidebar */}
-      <div className="fixed md:static w-64 h-screen bg-white border-r">
-        <Sidebar />
-      </div>
+      <Sidebar />
 
       {/* Main */}
-      <main className="flex-1 ml-0 md:ml-64 px-4 md:px-10 py-10 flex justify-center">
+      <main className="flex-1 ml-0 md:ml-64 px-4 md:px-10 py-10 pt-20 pb-20 md:py-10 flex justify-center">
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-lg bg-white border border-gray-200

@@ -76,7 +76,7 @@
 //           <p className="text-gray-400 text-center">No notifications</p>
 //         )}
 
-        
+
 //         {notifications.map((n) => (
 //             <div
 //               key={n._id}
@@ -195,12 +195,10 @@ export default function NotificationPage() {
     <div className="flex min-h-screen bg-gray-100">
 
       {/* SIDEBAR */}
-      <div className="hidden md:block fixed w-64 h-screen bg-white border-r">
-        <Sidebar />
-      </div>
+      <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 ml-0 md:ml-64 px-4 py-8">
+      <main className="flex-1 ml-0 md:ml-64 px-4 py-8 pt-20 pb-20 md:py-8">
         <div className="max-w-xl mx-auto">
 
           {/* HEADER */}
@@ -251,10 +249,10 @@ export default function NotificationPage() {
                   {n.type === "follow" && n.isRequest
                     ? "requested to follow you"
                     : n.type === "follow"
-                    ? "started following you"
-                    : n.type === "like"
-                    ? "liked your post"
-                    : "commented on your post"}
+                      ? "started following you"
+                      : n.type === "like"
+                        ? "liked your post"
+                        : "commented on your post"}
                 </div>
 
                 {/* ACTIONS */}
