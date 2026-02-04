@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../axios";
 import Sidebar from "../pages/navbar";
-import PostModal from "../components/PostModal";
+import PostModal from "./PostModal";
 
 export default function ProfilePage() {
   const { username } = useParams();

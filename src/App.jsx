@@ -4,10 +4,8 @@ import Sidebar from "./api/pages/navbar";
 import {BrowserRouter,Routes,Route, Navigate} from 'react-router-dom'
 import { Toaster } from "react-hot-toast";
 import EditProfile from "./api/components/editprofile";
-import ProfilePage from "./api/components/profilepage";
 import GoogleSuccess from "./api/components/GoogleSuccess";
 import ProtectedRoute from "./api/components/ProtectedRoute";
-
 import UserProfile from "./api/components/UserProfile";
 import Searchuser from "./api/components/SearchUser";
 import CreatePost from "./api/components/createpost";
@@ -17,6 +15,13 @@ import PostPage from "./api/pages/postpage";
 import { useEffect } from "react";
 import { socket } from "./api/socket";
 import Messages from "./api/pages/Messagepage";
+// import ProfilePage from "./api/components/profilepage";
+import ProfilePage from "./api/components/ProfilePage";
+
+
+
+
+
 
 
 
