@@ -14,8 +14,12 @@
 
 import axios from "axios";
 
+// const API_URL = import.meta.env.VITE_API_URL;
+
+
 export const api = axios.create({
-  baseURL: "https://backend-netvibe-app-main.onrender.com/api"
+  // baseURL: "https://backend-netvibe-app-main.onrender.com/api"
+  baseURL: "https://backend-netvibe-app-main.onrender.com"
 });
 
 api.interceptors.request.use((req) => {
