@@ -132,7 +132,7 @@
 
 
 // ----------------------------------------------------------
-import { Home, Search, PlusSquare, Send, Heart, User, MoreHorizontal } from "lucide-react";
+import { Home, Search, PlusSquare, Send, Heart, User, MoreHorizontal, Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../socket";
@@ -142,6 +142,9 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
   const [showMore, setShowMore] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.documentElement.classList.contains("dark")
+  );
   const [unreadCount, setUnreadCount] = useState(0);
 
   // 🔥 FETCH UNREAD COUNT
@@ -185,14 +188,26 @@ export default function Sidebar() {
     await api.put("/notifications/mark-read");
   };
 
+  const toggleTheme = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    if (newMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  };
+
   return (
     <>
       {/* ================= MOBILE TOP BAR ================= */}
-      <div className="md:hidden fixed top-0 left-0 w-full h-14 bg-white border-b flex items-center justify-between px-4 z-50">
+      <div className="md:hidden fixed top-0 left-0 w-full h-14 bg-white dark:bg-zinc-950 border-b dark:border-zinc-800 flex items-center justify-between px-4 z-50">
         <div className="text-xl font-bold bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">
           NetVIBE
         </div>
-        <div className="flex items-center gap-4 text-gray-800">
+        <div className="flex items-center gap-4 text-gray-800 dark:text-gray-200">
           {/* Notifications */}
           <div className="relative cursor-pointer" onClick={openNotifications}>
             <Heart size={24} />
@@ -208,10 +223,18 @@ export default function Sidebar() {
             </div>
 
             {showMore && (
-              <div className="absolute top-8 right-0 bg-white shadow-lg rounded-lg border border-gray-200 min-w-[120px] z-[60]">
+              <div className="absolute top-10 right-0 bg-white dark:bg-zinc-900 shadow-xl rounded-xl border border-gray-100 dark:border-zinc-800 min-w-[160px] z-[60] py-1">
+                <div
+                  onClick={toggleTheme}
+                  className="px-4 py-2 flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition"
+                >
+                  {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+                  <span className="text-sm font-medium">{isDarkMode ? "Light Mode" : "Dark Mode"}</span>
+                </div>
+                <div className="h-[1px] bg-gray-100 dark:bg-zinc-800 mx-2 my-1"></div>
                 <div
                   onClick={handleLogout}
-                  className="px-4 py-2 text-purple-500 hover:bg-purple-50 cursor-pointer transition rounded-lg"
+                  className="px-4 py-2 text-red-500 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition text-sm font-medium"
                 >
                   Logout
                 </div>
@@ -222,7 +245,7 @@ export default function Sidebar() {
       </div>
 
       {/* ================= MOBILE BOTTOM BAR ================= */}
-      <div className="md:hidden fixed bottom-0 left-0 w-full h-14 bg-white border-t flex items-center justify-around z-50 text-gray-800">
+      <div className="md:hidden fixed bottom-0 left-0 w-full h-14 bg-white dark:bg-zinc-950 border-t dark:border-zinc-800 flex items-center justify-around z-50 text-gray-800 dark:text-gray-200">
         <NavItem icon={<Home size={26} />} onClick={() => navigate("/home")} />
         <NavItem icon={<Search size={26} />} onClick={() => navigate("/search")} />
         <NavItem icon={<PlusSquare size={26} />} onClick={() => navigate("/create")} />
@@ -236,14 +259,14 @@ export default function Sidebar() {
       <div
         className="
           hidden md:flex flex-col w-56 h-screen fixed top-0 left-0 
-          bg-gray-100 border-r py-6 px-4 z-50
+          bg-gray-100 dark:bg-zinc-950 border-r dark:border-zinc-800 py-6 px-4 z-50 transition-colors duration-300
         "
       >
         <div className="mb-10 text-2xl font-bold text-purple-500 text-center">
           NetVIBE
         </div>
 
-        <div className="flex flex-col gap-6 text-gray-800 flex-1">
+        <div className="flex flex-col gap-6 text-gray-800 dark:text-gray-200 flex-1">
           <NavItem icon={<Home />} label="Home" onClick={() => navigate("/home")} />
           <NavItem icon={<Search />} label="Search" onClick={() => navigate("/search")} />
           <NavItem icon={<PlusSquare />} label="Create" onClick={() => navigate("/create")} />
@@ -265,10 +288,18 @@ export default function Sidebar() {
           <NavItem icon={<MoreHorizontal />} label="More" onClick={() => setShowMore(!showMore)} />
 
           {showMore && (
-            <div className="absolute bottom-12 left-0 w-full bg-white shadow-md rounded-md">
+            <div className="absolute bottom-12 left-0 w-full bg-white dark:bg-zinc-900 shadow-xl rounded-xl border border-gray-100 dark:border-zinc-800 z-[60] py-2">
+              <div
+                onClick={toggleTheme}
+                className="px-4 py-2 flex items-center gap-3 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition"
+              >
+                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+                <span className="font-medium">{isDarkMode ? "Switch Theme" : "Switch Theme"}</span>
+              </div>
+              <div className="h-[1px] bg-gray-100 dark:bg-zinc-800 mx-3 my-1"></div>
               <div
                 onClick={handleLogout}
-                className="px-4 py-2 text-purple-500 hover:bg-purple-50 cursor-pointer transition"
+                className="px-4 py-2 text-red-500 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition font-medium"
               >
                 Logout
               </div>
@@ -288,7 +319,7 @@ function NavItem({ icon, label, onClick }) {
     >
       <div className="text-xl group-hover:text-purple-500 transition">{icon}</div>
       {label && (
-        <span className="font-medium group-hover:text-purple-500 transition">
+        <span className="font-medium group-hover:text-purple-500 transition dark:text-gray-200">
           {label}
         </span>
       )}

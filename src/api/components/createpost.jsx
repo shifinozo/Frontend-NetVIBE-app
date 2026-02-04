@@ -143,7 +143,7 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 dark:bg-black transition-colors duration-300">
 
       {/* Sidebar */}
       <Sidebar />
@@ -152,11 +152,11 @@ export default function CreatePost() {
       <main className="flex-1 ml-0 md:ml-64 px-4 md:px-10 py-10 pt-20 pb-20 md:py-10 flex justify-center">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-sm md:max-w-lg bg-white border border-gray-200
+          className="w-full max-w-sm md:max-w-lg bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800
           rounded-2xl shadow-sm overflow-hidden"
         >
           {/* Header */}
-          <div className="px-4 md:px-6 py-4 md:py-5 border-b">
+          <div className="px-4 md:px-6 py-4 md:py-5 border-b dark:border-zinc-800">
             <h2 className="text-xl md:text-2xl font-semibold text-center
               bg-gradient-to-r from-purple-500 to-cyan-500
               text-transparent bg-clip-text">
@@ -165,7 +165,7 @@ export default function CreatePost() {
           </div>
 
           {/* Image Upload */}
-          <div className="h-[10rem] md:h-80 bg-gray-100 flex items-center justify-center">
+          <div className="h-[10rem] md:h-80 bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
             {file ? (
               <img
                 src={URL.createObjectURL(file)}
@@ -187,8 +187,8 @@ export default function CreatePost() {
           </div>
 
           {/* Caption */}
-          <div className="p-4 md:p-6 border-t">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="p-4 md:p-6 border-t dark:border-zinc-800">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Caption
             </label>
             <textarea
@@ -196,8 +196,8 @@ export default function CreatePost() {
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
               placeholder="Write a caption..."
-              className="w-full px-3 md:px-4 py-2 rounded-lg border border-gray-300
-              text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              className="w-full px-3 md:px-4 py-2 rounded-lg border border-gray-300 dark:border-zinc-700
+              text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400 bg-white dark:bg-zinc-800 text-gray-900 dark:text-gray-100"
             />
           </div>
 

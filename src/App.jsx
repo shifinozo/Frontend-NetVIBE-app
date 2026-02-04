@@ -1,7 +1,7 @@
 import Login from "./api/components/Loginpage";
 import SignUp from "./api/components/SignUppage";
 import Sidebar from "./api/pages/navbar";
-import {BrowserRouter,Routes,Route, Navigate} from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from "react-hot-toast";
 import EditProfile from "./api/components/editprofile";
 import GoogleSuccess from "./api/components/GoogleSuccess";
@@ -29,7 +29,17 @@ import ProfilePage from "./api/components/ProfilePage";
 
 export default function App() {
 
-useEffect(() => {
+  useEffect(() => {
+    // 🔥 THEME INITIALIZATION
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else if (savedTheme === "light") {
+      document.documentElement.classList.remove("dark");
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.documentElement.classList.add("dark");
+    }
+
     const userId = localStorage.getItem("userId");
 
     if (userId && !socket.connected) {
@@ -50,45 +60,45 @@ useEffect(() => {
   }, []);
 
 
-    const PublicRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
-  return token ? <Navigate to="/home" replace /> : children;
-};
+  const PublicRoute = ({ children }) => {
+    const token = localStorage.getItem("token");
+    return token ? <Navigate to="/home" replace /> : children;
+  };
 
   return (
-  
-  <BrowserRouter>
-    <Toaster position="top-center" />
+
+    <BrowserRouter>
+      <Toaster position="top-center" />
       <Routes>
-        <Route path="/" element={<PublicRoute><Login/></PublicRoute>}/>
-        <Route path="/signUp" element={<SignUp/>}/>
+        <Route path="/" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/signUp" element={<SignUp />} />
         <Route path="/google-success" element={<GoogleSuccess />} />
 
-      <Route element={<ProtectedRoute />}>
-        <Route path="/home" element={<Homepage/>}/>
-        <Route path="/navbar" element={<Sidebar />} />
-        <Route path="/editProfile" element={<EditProfile />} />
-        
-
-        
-        <Route path="/profile/:username" element={<ProfilePage />} />
-        <Route path="/search" element={<Searchuser />} />
-        <Route path="/user/:id" element={<UserProfile />} />
-
-        <Route path="/create" element={<CreatePost />} />
-
-        <Route path="/notifications" element={<NotificationPage/>} />
-
-        <Route path="/posts/:postId" element={<PostPage />} />
-
-        <Route path="/messages" element={<Messages />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/home" element={<Homepage />} />
+          <Route path="/navbar" element={<Sidebar />} />
+          <Route path="/editProfile" element={<EditProfile />} />
 
 
+
+          <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/search" element={<Searchuser />} />
+          <Route path="/user/:id" element={<UserProfile />} />
+
+          <Route path="/create" element={<CreatePost />} />
+
+          <Route path="/notifications" element={<NotificationPage />} />
+
+          <Route path="/posts/:postId" element={<PostPage />} />
+
+          <Route path="/messages" element={<Messages />} />
 
 
 
 
-      </Route>
+
+
+        </Route>
       </Routes>
     </BrowserRouter>
   )

@@ -293,7 +293,7 @@ export default function Searchuser() {
   );
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 dark:bg-black transition-colors duration-300">
       {/* Sidebar */}
       <Sidebar />
 
@@ -302,7 +302,7 @@ export default function Searchuser() {
         <div className="w-full max-w-2xl">
 
           {/* Search Bar */}
-          <div className="sticky top-0 z-10 bg-gray-100 px-6 pt-6">
+          <div className="sticky top-14 md:top-0 z-10 bg-gray-100 dark:bg-zinc-950 px-6 pt-6 transition-colors duration-300">
             <div className="relative">
               <FiSearch className="absolute left-4 top-3.5 text-gray-400" />
               <input
@@ -311,8 +311,8 @@ export default function Searchuser() {
                 placeholder="Search people on NetVibe"
                 className="
                   w-full pl-11 pr-4 py-3
-                  rounded-xl border border-gray-200
-                  bg-white text-sm
+                  rounded-xl border border-gray-200 dark:border-zinc-800
+                  bg-white dark:bg-zinc-900 text-sm text-gray-900 dark:text-gray-100
                   focus:outline-none focus:ring-2
                   focus:ring-purple-500 focus:border-cyan-400
                   shadow-sm
@@ -329,9 +329,9 @@ export default function Searchuser() {
                 key={user._id}
                 className="
                   flex items-center justify-between
-                  bg-white border border-gray-200
+                  bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800
                   rounded-xl px-4 py-3
-                  hover:shadow-lg transition
+                  hover:shadow-lg dark:hover:bg-zinc-800 transition
                 "
               >
                 <div
@@ -340,14 +340,14 @@ export default function Searchuser() {
                 >
                   <img
                     src={user.profilePic || "/avatar.png"}
-                    className="w-12 h-12 rounded-full object-cover border"
+                    className="w-12 h-12 rounded-full object-cover border dark:border-zinc-700"
                     alt=""
                   />
                   <div>
-                    <p className="font-semibold text-sm text-gray-900">
+                    <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">
                       {user.username}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       View profile
                     </p>
                   </div>
@@ -359,7 +359,7 @@ export default function Searchuser() {
                     className={`
                       text-sm font-medium px-4 py-1.5 rounded-full transition
                       ${user.isFollowing
-                        ? "border border-gray-300 text-gray-700 hover:bg-gradient-to-r hover:from-purple-500 hover:to-cyan-400 hover:text-white"
+                        ? "border border-gray-300 dark:border-zinc-700 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-purple-500 hover:to-cyan-400 hover:text-white"
                         : "bg-gradient-to-r from-purple-500 to-cyan-400 text-white hover:opacity-90"
                       }
                     `}

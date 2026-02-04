@@ -285,6 +285,38 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../pages/navbar";
 import { socket } from "../socket";
 
+const Caption = ({ username, caption, onUserClick }) => {
+  const [expanded, setExpanded] = useState(false);
+  const maxLength = 95;
+
+  if (!caption) return null;
+
+  const isLong = caption.length > maxLength;
+  const displayText = expanded || !isLong
+    ? caption
+    : caption.slice(0, maxLength);
+
+  return (
+    <div className="px-3 md:px-4 py-1 md:py-1.5 text-sm">
+      <span
+        onClick={onUserClick}
+        className="font-semibold mr-2 cursor-pointer hover:opacity-70"
+      >
+        {username}
+      </span>
+      <span className="text-gray-900 whitespace-pre-wrap">{displayText}</span>
+      {isLong && !expanded && (
+        <button
+          onClick={() => setExpanded(true)}
+          className="text-gray-500 ml-1 hover:underline focus:outline-none"
+        >
+          ... more
+        </button>
+      )}
+    </div>
+  );
+};
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [comment, setComment] = useState("");
@@ -370,7 +402,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 dark:bg-black transition-colors duration-300">
 
       {/* SIDEBAR */}
       <Sidebar />
@@ -384,7 +416,7 @@ export default function Home() {
             return (
               <div
                 key={post._id}
-                className="bg-white border-b border-gray-200 mb-3 md:mb-4"
+                className="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 mb-3 md:mb-4"
               >
                 {/* USER */}
                 <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3">
@@ -395,7 +427,7 @@ export default function Home() {
                   />
                   <span
                     onClick={() => navigate(`/user/${post.user._id}`)}
-                    className="font-semibold text-xs md:text-sm cursor-pointer hover:opacity-70"
+                    className="font-semibold text-xs md:text-sm cursor-pointer hover:opacity-70 dark:text-gray-100"
                   >
                     {post.user.username}
                   </span>
@@ -409,41 +441,60 @@ export default function Home() {
                 />
 
                 {/* ACTIONS */}
-                <div className="flex items-center gap-3 md:gap-4 px-3 md:px-4 pt-2 md:pt-3 text-xl md:text-2xl">
-                  <button onClick={() => toggleLike(post._id)}>
-                    {liked ? (
-                      <FaHeart className="text-red-500" />
-                    ) : (
-                      <FaRegHeart />
+                <div className="flex items-center gap-6 px-3 md:px-4 pt-3">
+                  {/* LIKE */}
+                  <div className="flex flex-col items-center gap-1">
+                    <button
+                      onClick={() => toggleLike(post._id)}
+                      className="hover:opacity-60 transition text-2xl"
+                    >
+                      {liked ? (
+                        <FaHeart className="text-red-500 scale-110" />
+                      ) : (
+                        <FaRegHeart />
+                      )}
+                    </button>
+                    {post.likes.length > 0 && (
+                      <span className="text-[10px] md:text-xs font-semibold text-gray-600 dark:text-gray-400">
+                        {post.likes.length}
+                      </span>
                     )}
-                  </button>
+                  </div>
 
-                  <button onClick={() => setActivePost(post)}>
-                    <FaComment />
-                  </button>
+                  {/* COMMENT */}
+                  <div className="flex flex-col items-center gap-1 dark:text-gray-300">
+                    <button
+                      onClick={() => setActivePost(post)}
+                      className="hover:opacity-60 transition text-2xl"
+                    >
+                      <FaComment />
+                    </button>
+                    {post.comments.length > 0 && (
+                      <span className="text-[10px] md:text-xs font-semibold text-gray-700 dark:text-gray-400">
+                        {post.comments.length}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                {/* LIKES & COMMENTS COUNT */}
-                <div className="px-3 md:px-4 pt-1.5 md:pt-2 pb-0.5 md:pb-1 flex items-center gap-2 md:gap-3 text-xs md:text-sm">
-                  {post.likes.length > 0 && (
-                    <span className="font-semibold">
-                      {post.likes.length} {post.likes.length === 1 ? 'like' : 'likes'}
-                    </span>
-                  )}
-                  {post.comments.length > 0 && (
-                    <span className="text-gray-600">
-                      {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
-                    </span>
-                  )}
-                </div>
+
 
                 {/* CAPTION */}
-                <div className="px-3 md:px-4 py-1.5 md:py-2 pb-2 md:pb-3 text-xs md:text-sm">
-                  <span className="font-semibold mr-1.5 md:mr-2">
-                    {post.user.username}
-                  </span>
-                  <span className="text-gray-900">{post.caption}</span>
-                </div>
+                <Caption
+                  username={post.user.username}
+                  caption={post.caption}
+                  onUserClick={() => navigate(`/user/${post.user._id}`)}
+                />
+
+                {/* VIEW ALL COMMENTS */}
+                {post.comments.length > 0 && (
+                  <button
+                    onClick={() => setActivePost(post)}
+                    className="px-3 md:px-4 pb-3 text-sm text-gray-400 hover:text-gray-500 transition block text-left w-full"
+                  >
+                    View all {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
+                  </button>
+                )}
               </div>
             );
           })}
@@ -458,7 +509,7 @@ export default function Home() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white w-full max-w-md rounded-2xl shadow-lg p-5"
+            className="bg-white dark:bg-zinc-900 w-full max-w-md rounded-2xl shadow-xl p-5 border border-transparent dark:border-zinc-800"
           >
             <h3
               className="text-lg font-semibold mb-4 text-center
@@ -468,9 +519,24 @@ export default function Home() {
               Comments
             </h3>
 
-            <div className="space-y-3 max-h-60 overflow-y-auto text-sm">
-              {activePost.comments.length === 0 && (
-                <p className="text-gray-400 text-center">
+            <div className="space-y-3 max-h-60 overflow-y-auto text-sm pr-1 custom-scrollbar">
+              {/* CAPTION AT TOP OF COMMENTS */}
+              {activePost.caption && (
+                <div className="flex gap-3 mb-4">
+                  <img
+                    src={activePost.user.profilePic || "/avatar.png"}
+                    className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                    alt=""
+                  />
+                  <div>
+                    <span className="font-semibold mr-2 dark:text-gray-100">{activePost.user.username}</span>
+                    <span className="text-gray-900 dark:text-gray-300 whitespace-pre-wrap">{activePost.caption}</span>
+                  </div>
+                </div>
+              )}
+
+              {activePost.comments.length === 0 && !activePost.caption && (
+                <p className="text-gray-400 text-center py-4">
                   No comments yet
                 </p>
               )}
@@ -485,13 +551,13 @@ export default function Home() {
                     key={c._id}
                     className="flex justify-between group"
                   >
-                    <p>
+                    <p className="dark:text-gray-300">
                       <b
                         onClick={() => {
                           navigate(`/user/${c.user._id}`);
                           setActivePost(null);
                         }}
-                        className="cursor-pointer hover:underline mr-1"
+                        className="cursor-pointer hover:underline mr-1 dark:text-gray-100"
                       >
                         {c.user.username}
                       </b>
@@ -517,7 +583,8 @@ export default function Home() {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Add a comment..."
-                className="flex-1 px-3 py-2 rounded-lg border
+                className="flex-1 px-3 py-2 rounded-lg border dark:border-zinc-700
+                bg-white dark:bg-zinc-800 text-gray-900 dark:text-white
                 focus:outline-none focus:ring-2 focus:ring-cyan-400"
               />
               <button
@@ -536,13 +603,13 @@ export default function Home() {
       {/* DELETE CONFIRMATION MODAL */}
       {deleteConfirm && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60]">
-          <div className="bg-white rounded-2xl shadow-xl p-6 max-w-sm mx-4">
-            <h3 className="text-lg font-semibold mb-2">Delete Comment</h3>
-            <p className="text-gray-600 mb-6">Are you sure you want to delete this comment?</p>
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-xl p-6 max-w-sm mx-4 border dark:border-zinc-800">
+            <h3 className="text-lg font-semibold mb-2 dark:text-white">Delete Comment</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">Are you sure you want to delete this comment?</p>
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 font-medium"
+                className="px-4 py-2 rounded-lg border border-gray-300 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 font-medium dark:text-gray-300"
               >
                 Cancel
               </button>

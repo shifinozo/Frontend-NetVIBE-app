@@ -370,12 +370,12 @@ export default function PostModal({ postId, onClose, onDelete, onUpdate }) {
       <div
         onClick={(e) => e.stopPropagation()}
         className="bg-white dark:bg-zinc-900 
-        w-full max-w-4xl h-[90vh] md:h-[85vh] 
+        w-full max-w-sm md:max-w-4xl h-[85vh] md:h-[85vh] 
         rounded-xl shadow-xl 
         flex flex-col md:flex-row overflow-hidden"
       >
         {/* LEFT – IMAGE */}
-        <div className="w-full h-[40vh] md:h-auto md:flex-1 bg-black flex items-center justify-center">
+        <div className="w-full h-[35vh] md:h-auto md:flex-1 bg-black flex items-center justify-center">
           <img
             src={post.media}
             alt="post"

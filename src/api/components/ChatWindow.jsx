@@ -213,38 +213,38 @@ export default function ChatWindow({ conversation }) {
 
   return (
     <div className="flex flex-col h-full 
-      bg-white rounded-xl shadow-lg overflow-hidden">
+      bg-white dark:bg-zinc-900 rounded-xl shadow-lg overflow-hidden transition-colors duration-300">
 
       {/* HEADER - Only show on mobile, desktop has it in Messagepage */}
-      <div className="flex md:hidden items-center gap-3 px-4 py-3 border-b border-gray-200">
+      <div className="flex md:hidden items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-zinc-800">
         <img
           src={otherUser?.profilePic || "/avatar.png"}
           alt="profile"
           className="w-10 h-10 rounded-full object-cover"
         />
         <div>
-          <p className="font-semibold text-gray-900">
+          <p className="font-semibold text-gray-900 dark:text-gray-100">
             {otherUser?.username || "User"}
           </p>
-          <p className="text-xs text-gray-500">Active</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Active</p>
         </div>
       </div>
 
       {/* SEARCH */}
-      <div className="p-3 border-b border-gray-200">
+      <div className="p-3 border-b border-gray-200 dark:border-zinc-800">
         <input
           placeholder="Search messages"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full rounded-lg px-3 py-2 text-sm
-            bg-white border border-gray-300
-            text-gray-900
+            bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700
+            text-gray-900 dark:text-gray-100
             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-cyan-400 transition"
         />
       </div>
 
       {/* MESSAGES */}
-      <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
+      <div className="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-zinc-950 transition-colors duration-300">
         {filteredMessages.length === 0 && (
           <p className="text-center text-gray-400 text-sm">
             No messages found
@@ -263,7 +263,7 @@ export default function ChatWindow({ conversation }) {
                 className={`max-w-xs px-4 py-2 rounded-lg text-sm shadow
                   ${isMe
                     ? "bg-gradient-to-r from-purple-500 to-cyan-400 text-white"
-                    : "bg-white border border-gray-300 text-gray-900"
+                    : "bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 text-gray-900 dark:text-gray-100"
                   }`}
               >
                 {m.text}
@@ -274,14 +274,14 @@ export default function ChatWindow({ conversation }) {
       </div>
 
       {/* INPUT */}
-      <div className="p-3 border-t border-gray-200 flex gap-2">
+      <div className="p-3 border-t border-gray-200 dark:border-zinc-800 flex gap-2 transition-colors duration-300">
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Message..."
           className="flex-1 rounded-lg px-3 py-2
-            bg-white border border-gray-300
-            text-gray-900
+            bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700
+            text-gray-900 dark:text-gray-100
             focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-cyan-400 transition"
         />
         <button

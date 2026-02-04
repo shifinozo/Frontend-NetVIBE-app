@@ -11,7 +11,7 @@
 //     fetchPosts();
 //   }, [userId]);
 
-  
+
 //   const fetchPosts = async () => {
 //     try {
 //       const res = await api.get(`/posts/user/${userId}`);
@@ -20,7 +20,7 @@
 //       console.error(err);
 //     }
 //   };
-  
+
 //   if (posts.length === 0) {
 //     return (
 //       <div className="mt-10 text-center text-gray-400">
@@ -83,7 +83,7 @@ export default function ProfilePosts({ userId }) {
 
   if (posts.length === 0) {
     return (
-      <div className="mt-10 text-center text-gray-400 text-sm">
+      <div className="mt-10 text-center text-gray-400 dark:text-gray-500 text-sm">
         No posts yet
       </div>
     );
@@ -92,7 +92,7 @@ export default function ProfilePosts({ userId }) {
   return (
     <>
       {/* Posts Grid */}
-      <div className="grid grid-cols-3 gap-1 mt-8 bg-white border rounded-lg overflow-hidden">
+      <div className="grid grid-cols-3 gap-1 md:gap-4 mt-8 transition-colors duration-300">
         {posts.map((post) => (
           <div
             key={post._id}
@@ -102,11 +102,10 @@ export default function ProfilePosts({ userId }) {
             <img
               src={post.media || post.image}
               alt="post"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-md md:rounded-lg shadow-sm"
             />
 
-            {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition" />
+            <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition rounded-lg" />
           </div>
         ))}
       </div>

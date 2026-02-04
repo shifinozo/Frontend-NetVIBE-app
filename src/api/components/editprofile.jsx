@@ -248,11 +248,11 @@ export default function EditProfile() {
             w-full max-w-lg
             bg-white border border-gray-200
             rounded-2xl shadow-sm
-            p-8
+            p-6 md:p-8
           "
         >
           <h2 className="
-            text-2xl font-semibold mb-8 text-center
+            text-xl md:text-2xl font-semibold mb-6 md:mb-8 text-center
             bg-gradient-to-r from-purple-500 to-cyan-500
             text-transparent bg-clip-text
           ">

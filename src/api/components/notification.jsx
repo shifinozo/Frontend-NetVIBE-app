@@ -192,7 +192,7 @@ export default function NotificationPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 dark:bg-black transition-colors duration-300">
 
       {/* SIDEBAR */}
       <Sidebar />
@@ -224,8 +224,9 @@ export default function NotificationPage() {
                 key={n._id}
                 className="
                   flex items-center gap-3 md:gap-4 p-3 md:p-4
-                  bg-white border rounded-xl md:rounded-2xl shadow-sm
-                  hover:shadow-md transition
+                  bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800
+                  rounded-xl md:rounded-2xl shadow-sm
+                  hover:shadow-md dark:hover:bg-zinc-800 transition
                 "
               >
                 {/* AVATAR */}
@@ -241,18 +242,20 @@ export default function NotificationPage() {
                     onClick={() =>
                       n.sender && navigate(`/user/${n.sender._id}`)
                     }
-                    className="font-semibold cursor-pointer hover:underline mr-1"
+                    className="font-semibold cursor-pointer hover:underline mr-1 dark:text-gray-100"
                   >
                     {n.sender?.username || "Unknown user"}
                   </span>
 
-                  {n.type === "follow" && n.isRequest
-                    ? "requested to follow you"
-                    : n.type === "follow"
-                      ? "started following you"
-                      : n.type === "like"
-                        ? "liked your post"
-                        : "commented on your post"}
+                  <span className="text-gray-700 dark:text-gray-300">
+                    {n.type === "follow" && n.isRequest
+                      ? "requested to follow you"
+                      : n.type === "follow"
+                        ? "started following you"
+                        : n.type === "like"
+                          ? "liked your post"
+                          : "commented on your post"}
+                  </span>
                 </div>
 
                 {/* ACTIONS */}
@@ -277,8 +280,9 @@ export default function NotificationPage() {
                       }
                       className="
                         px-3 py-1 text-xs rounded-lg font-medium
-                        border border-gray-300 text-gray-600
-                        hover:bg-gray-100
+                        border border-gray-300 dark:border-zinc-700
+                        text-gray-600 dark:text-gray-300
+                        hover:bg-gray-100 dark:hover:bg-zinc-800
                       "
                     >
                       Reject
@@ -295,7 +299,7 @@ export default function NotificationPage() {
                     src={n.post.media}
                     className="
                       w-12 h-12 object-cover rounded-lg
-                      cursor-pointer border
+                      cursor-pointer border dark:border-zinc-700
                     "
                     alt="post"
                   />

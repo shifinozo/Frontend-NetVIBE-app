@@ -118,25 +118,25 @@ export default function UserProfile() {
   if (!profile) return <p className="p-6">User not found</p>;
 
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex min-h-screen bg-white dark:bg-black transition-colors duration-300">
       <Sidebar />
 
-      <div className="flex-1 ml-0 md:ml-64 max-w-4xl mx-auto pt-20 pb-20 md:py-0">
+      <div className="flex-1 ml-0 md:ml-64 max-w-4xl mx-auto py-0">
 
-        <div className="hidden md:flex sticky top-0 z-20 bg-white border-b px-6 py-3 items-center gap-4">
+        <div className="hidden md:flex sticky top-0 z-20 bg-white dark:bg-zinc-950 border-b dark:border-zinc-800 px-6 py-3 items-center gap-4 transition-colors duration-300">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 rounded-full hover:bg-gray-100 transition"
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-800 dark:text-gray-100 transition"
           >
             <FiArrowLeft size={22} />
           </button>
 
-          <h1 className="text-lg font-semibold">
+          <h1 className="text-lg font-semibold dark:text-gray-100">
             {profile.username}
           </h1>
         </div>
 
-        <div className="px-6 py-6">
+        <div className="px-6 md:px-10 py-10 pt-20 pb-20 md:py-10">
           <ProfileHeader
             user={profile}
             isOwnProfile={profile._id === currentUserId}
@@ -147,9 +147,11 @@ export default function UserProfile() {
           />
 
           {profile.isPrivate && !isFollowing ? (
-            <p className="text-center mt-10 text-gray-500">
-              🔒 This account is private
-            </p>
+            <div className="text-center mt-20">
+              <span className="text-5xl opacity-40 grayscale">🔒</span>
+              <p className="mt-6 text-gray-700 dark:text-gray-200 font-semibold text-lg">This account is private</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Follow this account to see their photos and videos.</p>
+            </div>
           ) : (
             <ProfilePosts userId={id} />
           )}
