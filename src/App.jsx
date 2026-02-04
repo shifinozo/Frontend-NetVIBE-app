@@ -16,7 +16,8 @@ import { useEffect } from "react";
 import { socket } from "./api/socket";
 import Messages from "./api/pages/Messagepage";
 // import ProfilePage from "./api/components/profilepage";
-import ProfilePage from "./api/components/ProfilePage";
+// import ProfilePage from "./api/components/ProfilePage";
+import ProfilePage from "./api/components/Profilefixcase"
 
 
 
