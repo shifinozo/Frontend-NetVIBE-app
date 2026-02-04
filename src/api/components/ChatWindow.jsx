@@ -94,7 +94,7 @@
 //         />
 //       </div>
 
-      
+
 //       <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
 //         {filteredMessages.length === 0 && (
 //           <p className="text-center text-gray-400 text-sm">
@@ -124,7 +124,7 @@
 //         ))}
 //       </div>
 
-      
+
 //       <div className="p-3 border-t flex gap-2 bg-white">
 //         <input
 //           value={text}
@@ -215,8 +215,8 @@ export default function ChatWindow({ conversation }) {
     <div className="flex flex-col h-full 
       bg-white rounded-xl shadow-lg overflow-hidden">
 
-      {/* HEADER */}
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200">
+      {/* HEADER - Only show on mobile, desktop has it in Messagepage */}
+      <div className="flex md:hidden items-center gap-3 px-4 py-3 border-b border-gray-200">
         <img
           src={otherUser?.profilePic || "/avatar.png"}
           alt="profile"
@@ -261,10 +261,9 @@ export default function ChatWindow({ conversation }) {
             >
               <span
                 className={`max-w-xs px-4 py-2 rounded-lg text-sm shadow
-                  ${
-                    isMe
-                      ? "bg-gradient-to-r from-purple-500 to-cyan-400 text-white"
-                      : "bg-white border border-gray-300 text-gray-900"
+                  ${isMe
+                    ? "bg-gradient-to-r from-purple-500 to-cyan-400 text-white"
+                    : "bg-white border border-gray-300 text-gray-900"
                   }`}
               >
                 {m.text}

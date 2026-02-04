@@ -193,11 +193,29 @@ export default function Sidebar() {
           NetVIBE
         </div>
         <div className="flex items-center gap-4 text-gray-800">
-          {/* Notifications Only */}
+          {/* Notifications */}
           <div className="relative cursor-pointer" onClick={openNotifications}>
             <Heart size={24} />
             {unreadCount > 0 && (
               <span className="absolute -top-1 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+            )}
+          </div>
+
+          {/* More Button */}
+          <div className="relative">
+            <div onClick={() => setShowMore(!showMore)} className="cursor-pointer">
+              <MoreHorizontal size={24} />
+            </div>
+
+            {showMore && (
+              <div className="absolute top-8 right-0 bg-white shadow-lg rounded-lg border border-gray-200 min-w-[120px] z-[60]">
+                <div
+                  onClick={handleLogout}
+                  className="px-4 py-2 text-purple-500 hover:bg-purple-50 cursor-pointer transition rounded-lg"
+                >
+                  Logout
+                </div>
+              </div>
             )}
           </div>
         </div>

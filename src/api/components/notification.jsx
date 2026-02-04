@@ -198,12 +198,12 @@ export default function NotificationPage() {
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 ml-0 md:ml-64 px-4 py-8 pt-20 pb-20 md:py-8">
+      <main className="flex-1 ml-0 md:ml-64 px-3 md:px-4 py-6 md:py-8 pt-16 md:pt-20 pb-20">
         <div className="max-w-xl mx-auto">
 
           {/* HEADER */}
           <h2
-            className="text-2xl font-semibold mb-6 text-center
+            className="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-center
             bg-gradient-to-r from-purple-500 to-cyan-500
             bg-clip-text text-transparent"
           >
@@ -212,19 +212,19 @@ export default function NotificationPage() {
 
           {/* EMPTY */}
           {notifications.length === 0 && (
-            <p className="text-gray-400 text-center">
+            <p className="text-gray-400 text-center text-sm">
               No notifications yet
             </p>
           )}
 
           {/* LIST */}
-          <div className="space-y-4">
+          <div className="space-y-2 md:space-y-4">
             {notifications.map((n) => (
               <div
                 key={n._id}
                 className="
-                  flex items-center gap-4 p-4
-                  bg-white border rounded-2xl shadow-sm
+                  flex items-center gap-3 md:gap-4 p-3 md:p-4
+                  bg-white border rounded-xl md:rounded-2xl shadow-sm
                   hover:shadow-md transition
                 "
               >

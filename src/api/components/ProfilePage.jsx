@@ -83,7 +83,7 @@ export default function ProfilePage() {
             <div className="flex-1">
 
               {/* Username + Button Row */}
-              <div className="flex items-center justify-between mb-4 md:mb-5">
+              <div className="flex flex-col md:flex-row items-center md:items-center justify-between md:justify-start gap-2 md:gap-5 mb-4 md:mb-5">
                 <h2 className="text-xl md:text-2xl font-light text-gray-900">
                   {user.username}
                 </h2>

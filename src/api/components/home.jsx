@@ -376,7 +376,7 @@ export default function Home() {
       <Sidebar />
 
       {/* FEED */}
-      <main className="flex-1 ml-0 md:ml-64 pt-20 pb-20 md:py-8">
+      <main className="flex-1 ml-0 md:ml-64 pt-16 md:pt-20 pb-20 md:pb-8">
         <div className="max-w-xl mx-auto">
           {posts.map((post) => {
             const liked = post.likes.includes(userId);
@@ -384,18 +384,18 @@ export default function Home() {
             return (
               <div
                 key={post._id}
-                className="bg-white border-b border-gray-200 mb-4 md:mb-6"
+                className="bg-white border-b border-gray-200 mb-3 md:mb-4"
               >
                 {/* USER */}
-                <div className="flex items-center gap-3 px-3 md:px-4 py-3">
+                <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3">
                   <img
                     src={post.user.profilePic || "/avatar.png"}
                     onClick={() => navigate(`/user/${post.user._id}`)}
-                    className="w-8 h-8 rounded-full object-cover cursor-pointer"
+                    className="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover cursor-pointer"
                   />
                   <span
                     onClick={() => navigate(`/user/${post.user._id}`)}
-                    className="font-semibold text-sm cursor-pointer hover:opacity-70"
+                    className="font-semibold text-xs md:text-sm cursor-pointer hover:opacity-70"
                   >
                     {post.user.username}
                   </span>
@@ -409,7 +409,7 @@ export default function Home() {
                 />
 
                 {/* ACTIONS */}
-                <div className="flex items-center gap-4 px-3 md:px-4 pt-3 text-2xl">
+                <div className="flex items-center gap-3 md:gap-4 px-3 md:px-4 pt-2 md:pt-3 text-xl md:text-2xl">
                   <button onClick={() => toggleLike(post._id)}>
                     {liked ? (
                       <FaHeart className="text-red-500" />
@@ -424,7 +424,7 @@ export default function Home() {
                 </div>
 
                 {/* LIKES & COMMENTS COUNT */}
-                <div className="px-3 md:px-4 pt-2 pb-1 flex items-center gap-3 text-sm">
+                <div className="px-3 md:px-4 pt-1.5 md:pt-2 pb-0.5 md:pb-1 flex items-center gap-2 md:gap-3 text-xs md:text-sm">
                   {post.likes.length > 0 && (
                     <span className="font-semibold">
                       {post.likes.length} {post.likes.length === 1 ? 'like' : 'likes'}
@@ -438,8 +438,8 @@ export default function Home() {
                 </div>
 
                 {/* CAPTION */}
-                <div className="px-3 md:px-4 py-2 pb-3 text-sm">
-                  <span className="font-semibold mr-2">
+                <div className="px-3 md:px-4 py-1.5 md:py-2 pb-2 md:pb-3 text-xs md:text-sm">
+                  <span className="font-semibold mr-1.5 md:mr-2">
                     {post.user.username}
                   </span>
                   <span className="text-gray-900">{post.caption}</span>

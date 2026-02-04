@@ -182,7 +182,7 @@ export default function Messages() {
       >
 
         {/* Search Bar */}
-        <div className="p-3 border-b">
+        <div className="p-3 pt-16 md:pt-3 border-b sticky top-0 md:static bg-white z-30">
           <input
             type="text"
             placeholder="Search chats"
@@ -250,15 +250,34 @@ export default function Messages() {
       >
         {activeChat ? (
           <>
-            {/* Mobile Back Button */}
-            <div className="md:hidden p-3 bg-white border-b flex items-center gap-2 sticky top-0 z-10">
+            {/* Chat Header - with padding for mobile top bar */}
+            <div className="bg-white border-b p-3 md:p-4 flex items-center gap-3 sticky top-14 md:top-0 z-40">
+              {/* Mobile Back Button */}
               <button
                 onClick={() => setActiveChat(null)}
-                className="text-sm font-semibold text-purple-600"
+                className="md:hidden p-2 -ml-2 hover:bg-gray-100 rounded-full transition"
               >
-                ← Back
+                <svg
+                  className="w-6 h-6 text-gray-700"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
               </button>
-              <span className="font-bold">{activeChat.otherUser.username}</span>
+
+              <img
+                src={activeChat.otherUser.profilePic || "/avatar.png"}
+                alt=""
+                className="w-10 h-10 rounded-full object-cover border"
+              />
+              <p className="font-semibold">{activeChat.otherUser.username}</p>
             </div>
 
             <ChatWindow conversation={activeChat} />
