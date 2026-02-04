@@ -18,8 +18,8 @@ import axios from "axios";
 
 
 export const api = axios.create({
-  // baseURL: "https://backend-netvibe-app-main.onrender.com/api"
-  baseURL: "https://backend-netvibe-app-main.onrender.com"
+  baseURL: "https://backend-netvibe-app-main.onrender.com/api"
+  // baseURL: "https://backend-netvibe-app-main.onrender.com"
 });
 
 api.interceptors.request.use((req) => {
