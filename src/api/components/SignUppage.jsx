@@ -74,7 +74,7 @@ export default function SignUp() {
 
   // ✅ GOOGLE SIGNUP (UNCHANGED)
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href = "https://backend-netvibe-app-main.onrender.com/api/auth/google";
   };
 
   return (
