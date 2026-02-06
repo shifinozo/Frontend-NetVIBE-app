@@ -213,8 +213,8 @@ export default function EditProfile() {
     setLoading(true);
 
     const formData = new FormData();
-    formData.append("username", username);
-    formData.append("bio", bio);
+    formData.append("username", username.trim());
+    formData.append("bio", bio.trim());
     formData.append("isPrivate", isPrivate ? "true" : "false");
     if (profilePic) formData.append("profilePic", profilePic);
 
@@ -295,6 +295,7 @@ export default function EditProfile() {
               Username
             </label>
             <input
+              maxLength={12}
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -313,6 +314,7 @@ export default function EditProfile() {
               Bio
             </label>
             <textarea
+              maxLength={50}
               rows={3}
               value={bio}
               onChange={(e) => setBio(e.target.value)}
