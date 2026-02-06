@@ -28,7 +28,7 @@
 //       localStorage.setItem("token", res.data.token);
 //       localStorage.setItem("username", res.data.user.username);
 //       console.log("after loggeddd:",res.data.user._id); 
-      
+
 //       localStorage.setItem("userId", res.data.user._id);
 
 //       navigate(`/profile/${res.data.user.username}`);
@@ -147,7 +147,7 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/google";
+    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
   };
 
   return (
